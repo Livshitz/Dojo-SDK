@@ -1,0 +1,49 @@
+{
+    "name": "ts-scaffold",
+    "version": "0.0.1",
+    "main": "index.js",
+    "license": "MIT",
+    "author": "",
+    "scripts": {
+        "format": "prettier --config .prettierrc 'src/**/*.ts' 'tests/**/*.ts' --write",
+        "build": "tsc",
+        "watch": "tsc -w",
+        "main": "node build/Main.js",
+        "test": "jest",
+        "test:ci": "jest --ci --reporters=default --reporters=jest-junit --coverage --coverageReporters=cobertura --coverageReporters=html",
+        "bump": "./bump.sh"
+    },
+    "files": [
+        "build/**",
+        "dist/**",
+        "src/**",
+        "*.js",
+        "*.ts"
+    ],
+    "dependencies": {},
+    "devDependencies": {
+        "@types/jest": "^26.0.20",
+        "@types/node": "^14.14.25",
+        "jest": "^26.6.3",
+        "jest-junit": "^12.0.0",
+        "jest-junit-reporter": "^1.1.0",
+        "prettier": "^2.2.1",
+        "ts-jest": "^26.5.0",
+        "typescript": "^4.1.3"
+    },
+    "jest": {
+        "coverageReporters": [
+            "cobertura",
+            "html"
+        ]
+    },
+    "jest-junit": {
+        "suiteName": "jest tests",
+        "outputDirectory": "build/test_reports",
+        "output": "./.tmp/test/TEST-RESULTS.xml",
+        "classNameTemplate": "{classname} - {title}",
+        "titleTemplate": "{classname} - {title}",
+        "ancestorSeparator": " > ",
+        "usePathForSuiteName": "true"
+    }
+}
