@@ -51,6 +51,7 @@ export class Publisher<T = any> {
 
     public async lock(message: MessageEnvelop<T>) {
         const m = this.map[message.id];
+        if (m == null) return false;
         if (m.status != MessageEnvelopStatuses.ready) {
             log.d('Publisher:lock: Message in not in "ready" state', message, this.name);
             return false;
