@@ -40,9 +40,13 @@ export class Publisher<T = any> {
 
     public async tryBroadcastNext() {
         if (this.queue.length == 0) return;
-        const next = this.queue[0];
-        log.d('Publisher:tryBroadcastNext: trying to notify consumers on next message in line...', next, this.queue.length);
-        this.onNew.broadcast(next);
+
+        for (let next of this.queue) {
+            if (next.status != MessageEnvelopStatuses.ready) continue;
+            log.d('Publisher:tryBroadcastNext: trying to notify consumers on next message in line...', next, this.queue.length);
+            this.onNew.broadcast(next);
+            break;
+        }
     }
 
     public async isLocked(message: MessageEnvelop<T>) {
@@ -53,10 +57,13 @@ export class Publisher<T = any> {
         const m = this.map[message.id];
         if (m == null) return false;
         if (m.status != MessageEnvelopStatuses.ready) {
-            log.d('Publisher:lock: Message in not in "ready" state', message, this.name);
+            // log.d('Publisher:lock: Message in not in "ready" state', message, this.name);
             return false;
         }
         m.status = MessageEnvelopStatuses.locked;
+
+        setTimeout(() => this.tryBroadcastNext(), 0);
+
         return true;
     }
 
@@ -71,7 +78,7 @@ export class Publisher<T = any> {
         await this.tryBroadcastNext();
     }
 
-    public async nack(message: MessageEnvelop<T>) {
+    public async reject(message: MessageEnvelop<T>) {
         const m = this.map[message.id];
         m.status = MessageEnvelopStatuses.ready;
     }

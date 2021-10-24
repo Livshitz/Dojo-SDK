@@ -24,33 +24,33 @@ export class Consumer<T = any> {
     public async triggered(message: MessageEnvelop<T>) {
         await libx.sleep(0); // Will allow event-loop to properly propagate concurrent changes
         if (this.isBusy) return;
-        log.d(this.getIdentifier() + ': Treating message', this.id, message);
 
+        // log.d(`Consumer: ${this.getIdentifier()}: Attempting to lock`, message, this.isBusy);
         if (await this.publisher.lock(message)) {
             if (this.isBusy == false) {
-                log.d(this.getIdentifier() + ': locking', this.id, this.isBusy);
+                log.d(`Consumer: ${this.getIdentifier()}: Successfully locked, treating message`, message);
                 this.isBusy = true;
 
                 try {
                     await this.treat(message, this.getIdentifier());
+                    log.d(`Consumer: ${this.getIdentifier()}: Treatment completed successfully, releasing`, message);
                     await this.publisher.ack(message);
                 } catch (ex) {
-                    log.e(this.getIdentifier() + ': Error while treating message', ex, message);
-                    await this.publisher.nack(message);
+                    log.e(`Consumer: ${this.getIdentifier()}: Error while treating, rejecting message`, ex, message);
+                    await this.publisher.reject(message);
                 }
-                log.d(this.getIdentifier() + ': releasing', this.id);
             } else {
-                log.d(this.getIdentifier() + ': consumer already busy', this.id);
-                await this.publisher.nack(message);
+                log.d(`Consumer: ${this.getIdentifier()}: Consumer already busy`);
+                await this.publisher.reject(message);
             }
         } else {
-            log.d(this.getIdentifier() + ': message already locked', this.id, message);
+            log.d(`Consumer: ${this.getIdentifier()}: Message already locked`, message);
         }
 
         this.isBusy = false;
     }
 
     private getIdentifier() {
-        return this.identifier || (this.identifier = `Consumer: ${this.queueName}:${this.instanceNum}:${this.id.substring(0, 3)}`);
+        return this.identifier || (this.identifier = `${this.queueName}:${this.instanceNum}:${this.id.substring(0, 3)}`);
     }
 }
