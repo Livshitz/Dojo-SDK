@@ -1,5 +1,7 @@
-# 🏗 ts-scaffold
+# 🤓 interview-sdk
 
+TBD
+<!-- 
 Scaffold project for Typescript projects, with Unit Tests and basic dependencies set up.
 
 ## Features:
@@ -55,6 +57,8 @@ or:
 > or:  
 > `$ node build/Main.js`
 
+-->
+
 ---
 
-Scaffolded with [🏗 TS-scaffold](https://github.com/Livshitz/ts-scaffold.git)
+Scaffolded with [🏗 TS-scaffold](https://github.com/Livshitz/ts-scaffold.git) 

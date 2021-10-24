@@ -1,7 +1,7 @@
 {
-    "name": "ts-scaffold",
+    "name": "interview-sdk",
     "version": "0.0.1",
-    "main": "index.js",
+    "main": "build/Main.js",
     "license": "MIT",
     "author": "",
     "scripts": {
@@ -13,14 +13,19 @@
         "test:ci": "jest --ci --reporters=default --reporters=jest-junit --coverage --coverageReporters=cobertura --coverageReporters=html",
         "bump": "./bump.sh"
     },
+    "bin": {
+        "my-command": "bin/cli.sh"
+    },
     "files": [
-        "build/**",
+        "bin/**",
         "dist/**",
         "src/**",
         "*.js",
         "*.ts"
     ],
-    "dependencies": {},
+    "dependencies": {
+        "libx.js": "^2.0.2"
+    },
     "devDependencies": {
         "@types/jest": "^26.0.20",
         "@types/node": "^14.14.25",
