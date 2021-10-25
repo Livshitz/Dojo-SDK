@@ -24,4 +24,8 @@ export class MessageQueueManager {
             }, consumer.identifier);
         }
     }
+
+    public async getPublisher(queueName: string) {
+        return this.publishers[queueName];
+    }
 }

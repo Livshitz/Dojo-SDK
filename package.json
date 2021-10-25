@@ -1,6 +1,6 @@
 {
     "name": "interview-sdk",
-    "version": "0.0.1",
+    "version": "0.1.1",
     "main": "build/Main.js",
     "license": "MIT",
     "author": "",
@@ -24,7 +24,8 @@
         "*.ts"
     ],
     "dependencies": {
-        "libx.js": "^2.0.2"
+        "cron-parser": "^4.1.0",
+        "libx.js": "^2.2.0"
     },
     "devDependencies": {
         "@types/jest": "^26.0.20",

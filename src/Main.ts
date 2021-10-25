@@ -3,6 +3,8 @@ import { libx } from 'libx.js/build/bundles/node.essentials';
 import { MessageQueueManager } from './MessageQueue/MessageQueueManager';
 import { Publisher } from './MessageQueue/Publisher';
 import { Consumer } from './MessageQueue/Consumer';
+import { CronScheduler } from './Scheduler/CronScheduler';
+import { ScheduleFormatParser } from './Scheduler/ScheduleFormatParser';
 
 export default class App {
     constructor() {}
@@ -10,35 +12,15 @@ export default class App {
     public async run() {
         // log.isDebug = true;
 
-        // Setup:
-        const mqMgr = new MessageQueueManager();
-        const queue1 = await mqMgr.createQueue('queue1');
-        const queue2 = await mqMgr.createQueue('queue2');
-
-        mqMgr.addWorker<MyItem>(
-            'queue1',
-            async (item, instanceIdentifier) => {
-                log.v(`${instanceIdentifier}: treating item`, item.payload);
-                await libx.sleep(1000);
-                log.v(`${instanceIdentifier}: done`, item.payload);
-            },
-            2
-        );
-        mqMgr.addWorker<MyItem>('queue2', async (item, instanceIdentifier) => {
-            log.v(`${instanceIdentifier}:xx: treating item`, item.payload);
-            await libx.sleep(100);
-            log.v(`${instanceIdentifier}:xx: done`, item.payload);
+        const cronSchedule = '*/5    *    *    *    *    *'; //'42 * * * *';
+        // const res = ScheduleFormatParser.parseCronFormat(cronSchedule);
+        const s = new CronScheduler();
+        s.scheduleOnce(cronSchedule, async () => {
+            console.log('Single tick!');
         });
-
-        // Simulate new message:
-        queue1.enqueue({ num: 11, str: 's11' });
-        queue1.enqueue({ num: 12, str: 's12' });
-        queue1.enqueue({ num: 13, str: 's13' });
-
-        queue2.enqueue({ num: 21, str: 's21' });
-        queue2.enqueue({ num: 22, str: 's22' });
-        await libx.sleep(100);
-        queue1.enqueue({ num: 14, str: 's14' });
+        const p = s.scheduleRepeating(cronSchedule, async () => {
+            console.log('!!! Recurring tick!!!');
+        });
 
         // Grace period:
         await libx.node.prompts.waitForAnyKey();

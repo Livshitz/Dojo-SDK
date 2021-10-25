@@ -1,7 +1,7 @@
 import { libx } from 'libx.js/build/bundles/node.essentials';
 import { log } from 'libx.js/build/modules/log';
-import { MessageQueueManager } from '../../src/MessageQueue/MessageQueueManager';
-import { Publisher } from '../../src/MessageQueue/Publisher';
+import { MessageQueueManager } from '../src/MessageQueue/MessageQueueManager';
+import { Publisher } from '../src/MessageQueue/Publisher';
 
 // libx.log.isDebug = true;
 
