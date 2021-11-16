@@ -25,7 +25,7 @@
     ],
     "dependencies": {
         "cron-parser": "^4.1.0",
-        "libx.js": "^2.2.0"
+        "libx.js": "^2.6.1"
     },
     "devDependencies": {
         "@types/jest": "^26.0.20",

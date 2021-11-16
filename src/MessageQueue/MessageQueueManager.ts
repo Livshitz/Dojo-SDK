@@ -1,5 +1,6 @@
 import { Mapping } from 'libx.js/src/types/interfaces';
 import { Consumer, Delegate } from './Consumer';
+import { IWorker } from './IWorker';
 import { Publisher } from './Publisher';
 
 export class MessageQueueManager {
@@ -12,9 +13,9 @@ export class MessageQueueManager {
         return mq;
     }
 
-    public async addWorker<T = any>(queueName: string, delegate: Delegate<T>, instances = 1) {
+    public async addWorker<T = any>(queueName: string, worker: IWorker<T>, instances = 1) {
         for (let i = 0; i < instances; i++) {
-            const consumer = new Consumer<T>(this, delegate, i);
+            const consumer = new Consumer<T>(this, worker.treat, i);
             this.consumers.push(consumer);
             const publisher: Publisher<T> = this.publishers[queueName];
             consumer.assign(publisher);

@@ -21,15 +21,12 @@ class Script implements IScript<typeof conf> {
 
         const mqMgr = new MessageQueueManager();
         await mqMgr.createQueue<MyItem>('queue1');
-        const myWorker = new MyWorker(mqMgr);
+        const myWorker = new MyWorker();
+        mqMgr.addWorker<MyItem>('queue1', myWorker, 2);
 
         const queue1 = await mqMgr.getPublisher('queue1');
 
-        // Grace period:
-        // await libx.node.prompts.waitForAnyKey();
         const input = await libx.node.prompts.readKey(async (k) => {
-            console.log(libx.toUnicode(k));
-
             if (k == 'i') {
                 log.i('Inserting bulk messages');
                 for (let i = 0; i < 10; i++) {
@@ -41,8 +38,11 @@ class Script implements IScript<typeof conf> {
             } else if (k == 'b') {
                 log.i('Inserting message B');
                 queue1.enqueue({ num: 200, str: 'message B' });
+            } else if (k == 'q') {
+                log.i('quitting...');
+                return false;
             }
-        }, 'Press "i" to insert bulk messages, "a" to insert message A, and "b" to insert message B...');
+        }, 'Press\n "i" to insert bulk messages,\n "a" to insert message A,\n "b" to insert message B,\n "q" to quit...');
         log.i('Keys pressed', input);
 
         return;

@@ -17,10 +17,13 @@ beforeAll(async () => {});
 test('1 worker should treat a message', async (done) => {
     const mqMgr = new MessageQueueManager();
     const queue1 = await mqMgr.createQueue<MyItem>('queue1');
+
     mqMgr.addWorker<MyItem>(
         'queue1',
-        async (item, instanceIdentifier) => {
-            done();
+        {
+            treat: async (item, instanceIdentifier) => {
+                done();
+            },
         },
         1
     );
@@ -38,10 +41,12 @@ test('1 worker should treat a 2 message in right order', async (done) => {
     const queue1 = await mqMgr.createQueue<MyItem>('queue1');
     mqMgr.addWorker<MyItem>(
         'queue1',
-        async (item, instanceIdentifier) => {
-            await libx.sleep(sleep);
-            events.push(item.payload.str + ' treated');
-            checkCompleted();
+        {
+            treat: async (item, instanceIdentifier) => {
+                await libx.sleep(sleep);
+                events.push(item.payload.str + ' treated');
+                checkCompleted();
+            },
         },
         1
     );
@@ -69,10 +74,12 @@ test('1 worker with 2 instances should treat a 2 message in order and in paralle
     const queue1 = await mqMgr.createQueue<MyItem>('queue1');
     mqMgr.addWorker<MyItem>(
         'queue1',
-        async (item, instanceIdentifier) => {
-            await libx.sleep(sleep);
-            events.push(item.payload.str + ' treated by ' + instanceIdentifier.slice(0, -4));
-            checkCompleted();
+        {
+            treat: async (item, instanceIdentifier) => {
+                await libx.sleep(sleep);
+                events.push(item.payload.str + ' treated by ' + instanceIdentifier.slice(0, -4));
+                checkCompleted();
+            },
         },
         2
     );
@@ -103,10 +110,12 @@ test('1 worker with 3 instances should treat a 3 message in order and in paralle
     const queue1 = await mqMgr.createQueue<MyItem>('queue1');
     mqMgr.addWorker<MyItem>(
         'queue1',
-        async (item, instanceIdentifier) => {
-            await libx.sleep(sleep);
-            events.push(item.payload.str + ' treated by ' + instanceIdentifier.slice(0, -4));
-            checkCompleted();
+        {
+            treat: async (item, instanceIdentifier) => {
+                await libx.sleep(sleep);
+                events.push(item.payload.str + ' treated by ' + instanceIdentifier.slice(0, -4));
+                checkCompleted();
+            },
         },
         3
     );
@@ -141,8 +150,8 @@ test('2 worker with 1 instances should treat a 3 message in order and in sequenc
         events.push(item.payload.str + ' treated by ' + instanceIdentifier.slice(0, -4));
         checkCompleted();
     };
-    mqMgr.addWorker<MyItem>('queue1', treat, 1);
-    mqMgr.addWorker<MyItem>('queue2', treat, 1);
+    mqMgr.addWorker<MyItem>('queue1', { treat }, 1);
+    mqMgr.addWorker<MyItem>('queue2', { treat }, 1);
     queue1.enqueue({ num: 1, str: 'msg1' });
     events.push('msg1 enqueue');
     await libx.sleep(0);
