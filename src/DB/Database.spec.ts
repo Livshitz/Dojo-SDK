@@ -1,6 +1,6 @@
 import { libx } from 'libx.js/build/bundles/node.essentials';
 import { sleep } from 'libx.js/node_modules/concurrency.libx.js';
-import { Database } from '../src/DB/Database';
+import { Database } from './Database';
 
 test('should do basic write, retrieve and find', async (done) => {
     const db = new Database({ persistOnTerminate: false });

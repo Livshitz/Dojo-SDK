@@ -1,4 +1,4 @@
-import { IRequest } from './IRequest';
+import { IRequest } from './Request';
 
 export interface IService<T = any> {
     id: String;
@@ -8,4 +8,6 @@ export interface IService<T = any> {
     teardown: () => void;
     getIsBusy: () => Promise<boolean>;
     getThroughput: () => Promise<number>;
+
+    createdAt: Date;
 }
