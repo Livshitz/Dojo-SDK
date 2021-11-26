@@ -1,6 +1,6 @@
 import { libx } from 'libx.js/build/bundles/node.essentials';
 import { sleep } from 'libx.js/node_modules/concurrency.libx.js';
-import { Database } from '../src/DB/Database';
+import { Database } from './Database';
 
 test('should do basic write, retrieve and find', async (done) => {
     const db = new Database({ persistOnTerminate: false });
@@ -32,17 +32,17 @@ test('should perform well with large dataset', async (done) => {
     await db.onReady;
     const col = 'myCollection';
     const amount = 10000;
-    libx.measure('write_time');
+    libx.startMeasure('write_time');
     for (let i = 0; i <= amount; i++) {
         await db.write(col, { a: 'hello world', i });
     }
-    const dur_write = libx.getMeasure('write_time');
+    const dur_write = libx.peekMeasure('write_time');
     // console.log(dur_write);
     expect(dur_write).toBeLessThanOrEqual(400);
 
-    libx.measure('find_time');
+    libx.startMeasure('find_time');
     const found = await db.find(col, (x) => x.i == amount);
-    const dur_find = libx.getMeasure('find_time');
+    const dur_find = libx.peekMeasure('find_time');
     expect(found.length).toEqual(1);
     expect(dur_find).toBeLessThanOrEqual(1000);
     // console.log('dur: ', dur_find);

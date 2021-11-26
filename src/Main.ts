@@ -36,7 +36,7 @@ export default class App {
             const col = 'myCollection';
             const amount = 1000000;
             log.v('write: start');
-            libx.measure('write_time');
+            libx.startMeasure('write_time');
             const pAll = [];
             for (let i = 0; i <= amount; i++) {
                 await db.write(col, { a: i, i });
@@ -44,13 +44,13 @@ export default class App {
                 // console.log(id);
             }
             // await Promise.all(pAll);
-            log.v('write: done', libx.getMeasure('write_time'));
-            libx.measure('find_time');
+            log.v('write: done', libx.peekMeasure('write_time'));
+            libx.startMeasure('find_time');
             const a = new Date();
             log.v('find: start');
             const found = await db.find(col, (x) => x.i == amount);
             log.v('find: done');
-            const dur = libx.getMeasure('find_time');
+            const dur = libx.peekMeasure('find_time');
             console.log('dur: ', dur);
         };
         const testDB = async () => {

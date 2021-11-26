@@ -1,5 +1,5 @@
-import { CronScheduler } from '../src/Scheduler/CronScheduler';
-import { ScheduleFormatParser } from '../src/Scheduler/ScheduleFormatParser';
+import { CronScheduler } from './CronScheduler';
+import { ScheduleFormatParser } from './ScheduleFormatParser';
 
 test('scheduleOnce should have only 1 tick and scheduled on time', async (done) => {
     const cronSchedule = '*/2 * * * * *';
