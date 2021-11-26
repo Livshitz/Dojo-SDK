@@ -3,7 +3,7 @@
     "version": "0.1.1",
     "main": "build/Main.js",
     "license": "MIT",
-    "author": "",
+    "author": "Elya Livshitz",
     "scripts": {
         "format": "prettier --config .prettierrc 'src/**/*.ts' 'tests/**/*.ts' --write",
         "build": "tsc",
@@ -11,6 +11,7 @@
         "main": "node build/Main.js",
         "test": "jest",
         "test:ci": "jest --ci --reporters=default --reporters=jest-junit --coverage --coverageReporters=cobertura --coverageReporters=html",
+        "test:debug": "node --inspect ./node_modules/jest/bin/jest.js --runInBand --colors --verbose",
         "bump": "./bump.sh"
     },
     "bin": {
@@ -24,8 +25,10 @@
         "*.ts"
     ],
     "dependencies": {
+        "@types/faker": "^5.5.9",
         "cron-parser": "^4.1.0",
-        "libx.js": "^2.6.1"
+        "faker": "^5.5.3",
+        "libx.js": "^2.9.0"
     },
     "devDependencies": {
         "@types/jest": "^26.0.20",

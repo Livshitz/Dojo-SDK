@@ -5,7 +5,7 @@ import { ScheduleFormatParser } from './ScheduleFormatParser';
 export class CronScheduler<T = any> {
     constructor() {}
 
-    public async scheduleOnce(cronSchedulingFormat: string, tick?: () => Promise<void>) {
+    public async scheduleOnce(cronSchedulingFormat: string, tick?: () => Promise<void> | void) {
         const next = ScheduleFormatParser.parseCronFormat(cronSchedulingFormat);
         log.d('CronScheduler:scheduleOnce: Calculating next tick and waiting...', cronSchedulingFormat, next);
         await delay(next.getTime() - new Date().getTime());
@@ -13,7 +13,7 @@ export class CronScheduler<T = any> {
         if (tick != null) await tick();
     }
 
-    public async scheduleRepeating(cronSchedulingFormat: string, tick: () => Promise<void>) {
+    public async scheduleRepeating(cronSchedulingFormat: string, tick: () => Promise<void> | void) {
         log.d('CronScheduler:scheduleRepeating: setting up...', cronSchedulingFormat);
         const p = new Deferred();
         this.scheduleOnce(cronSchedulingFormat, async () => {
@@ -23,6 +23,11 @@ export class CronScheduler<T = any> {
         });
         return p;
     }
+}
+
+export enum SchedulerTypes {
+    Once,
+    Recurring,
 }
 
 /*
