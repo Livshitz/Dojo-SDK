@@ -11,6 +11,6 @@ export class MyWorker implements IWorker<MyItem> {
     public async treat(item: MessageEnvelop<MyItem>, instanceIdentifier: String) {
         const x = libx.randomNumber(1000);
         await libx.sleep(x);
-        log.v(`Treated (${instanceIdentifier})`, item, x);
+        log.v(`MQ: Treated (${instanceIdentifier})`, item, x);
     }
 }

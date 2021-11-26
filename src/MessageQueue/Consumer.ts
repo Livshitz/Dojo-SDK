@@ -4,7 +4,7 @@ import { MessageEnvelop } from './MessageEnvelop';
 import { Publisher } from './Publisher';
 import { libx } from 'libx.js/build/bundles/node.essentials';
 
-export type Delegate<T = any> = (item: MessageEnvelop<T>, instanceIdentifier: String) => Promise<void>;
+export type Delegate<T = any> = (item: MessageEnvelop<T>, instanceIdentifier: String) => Promise<void> | void;
 
 export class Consumer<T = any> {
     private publisher: Publisher;

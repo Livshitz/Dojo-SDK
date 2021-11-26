@@ -32,7 +32,7 @@ export class Request implements IRequest {
     promise?: Deferred<IRequest, any>;
     createdAt: Date;
 
-    constructor(path: string, method: RequestMethods, body: {} | string) {
+    constructor(path: string, method: RequestMethods, body?: {} | string) {
         this.reqId = generateId();
         this.createdAt = new Date();
         this.path = path;

@@ -18,6 +18,7 @@ export class Database {
         this.onReady.then(this.onReady_cb);
         this.onStart();
         if (this.options.persistOnTerminate) libx.node.onExit(this.onTerminate.bind(this));
+        libx.node.catchErrors();
     }
 
     public async get<T extends OBJ>(collection: string, id: ID) {

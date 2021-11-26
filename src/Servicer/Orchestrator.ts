@@ -16,7 +16,7 @@ export class Orchestrator {
     public onJobCompleted = new Callbacks<IRequest>();
     public onAutoScale = new Callbacks<number>();
 
-    constructor(private serviceFactory: () => Promise<IService>, private minCount = 1, private maxCount = 3) {
+    constructor(private serviceFactory: () => Promise<IService> | IService, private minCount = 1, private maxCount = 3) {
         this.onJobCompleted.subscribe(this.onJobCompletedCallback.bind(this));
     }
 
@@ -50,21 +50,8 @@ export class Orchestrator {
     private async treat() {
         const stats = await this.getStats();
         log.d('Orchestrator:treat: stats:', stats);
-        const instance = await this.getFreeInstance();
-        if (instance == null) {
-            const shouldScale = this.instances.length < this.maxCount;
-            log.d(
-                'Orchestrator:treat: No available instances, ' +
-                    (shouldScale
-                        ? `will try to scale from ${this.instances.length} by one instance (${this.maxCount} max)`
-                        : 'will wait until completion of running jobs...')
-            );
 
-            this.scaleUp(1);
-            return;
-        }
-        const request = this.queue.dequeue();
-        if (request == null) {
+        if (this.queue.count() == 0) {
             log.d('Orchestrator:treat: No more pending jobs...');
             if (this.isBusy && stats.busyInstances == 0) {
                 this.onIdle.trigger(stats);
@@ -78,6 +65,22 @@ export class Orchestrator {
 
             return;
         }
+
+        const instance = await this.getFreeInstance();
+        if (instance == null) {
+            const shouldScale = this.instances.length < this.maxCount;
+            log.d(
+                'Orchestrator:treat: No available instances, ' +
+                    (shouldScale
+                        ? `will try to scale from ${this.instances.length} by one instance (${this.maxCount} max)`
+                        : 'will wait until completion of running jobs...')
+            );
+
+            this.scaleUp(1);
+            return;
+        }
+
+        const request = this.queue.dequeue();
         let p: Promise<any>;
         log.d('Orchestrator:treat: Treating...');
         p = instance.handle(request);
@@ -104,9 +107,13 @@ export class Orchestrator {
         let isScaled = false;
         if (this.instances.length >= this.maxCount) return;
         for (let i = 0; i < count; i++) {
-            const newService = await this.serviceFactory();
-            this.instances.push(newService);
-            isScaled = true;
+            try {
+                const newService = await this.serviceFactory();
+                this.instances.push(newService);
+                isScaled = true;
+            } catch (err) {
+                log.e('Orchestrator:scaleUp: Failed to create a new service', err);
+            }
         }
         if (isScaled) {
             this.onAutoScale.trigger(this.instances.length);
