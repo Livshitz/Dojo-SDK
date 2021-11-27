@@ -28,7 +28,7 @@
         "@types/faker": "^5.5.9",
         "cron-parser": "^4.1.0",
         "faker": "^5.5.3",
-        "libx.js": "^2.9.0"
+        "libx.js": "^2.10.0"
     },
     "devDependencies": {
         "@types/jest": "^26.0.20",
