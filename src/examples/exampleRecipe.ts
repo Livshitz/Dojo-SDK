@@ -47,8 +47,8 @@ export class ExampleRecipe extends BaseRecipe {
                 new (class extends BaseService {
                     async handle(req: IRequest) {
                         log.i('Service:', req);
-                        req.response = { a: 'hello!?' };
-                        super.handle(req);
+                        req.response = { a: `hello!? from ${this.identifier}` };
+                        // super.handle(req);
                     }
                 })(),
             1,

@@ -15,7 +15,9 @@ export class ServiceProxy {
             const { query, params, url, path, headers, method, body } = req;
 
             try {
-                const r: IRequest = await this.master.request(new RequestX(url, RequestMethods[method], body));
+                const newReq = new RequestX(url, RequestMethods[method], body);
+                newReq.headers = headers;
+                const r: IRequest = await this.master.request(newReq);
 
                 // res.json({ query, params, url, path, method, response: r?.response });
                 res.json(r?.response);
