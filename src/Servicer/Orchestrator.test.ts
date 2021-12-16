@@ -2,7 +2,7 @@ import { libx } from 'libx.js/build/bundles/node.essentials';
 import { log } from 'libx.js/build/modules/log';
 import { browserHelpers } from 'libx.js/build/browser/browserHelpers';
 import { delay } from 'libx.js/node_modules/concurrency.libx.js';
-import { IRequest, Request, RequestMethods } from './Request';
+import { IRequest, RequestX, RequestMethods } from './Request';
 import { IService } from './IService';
 import { Orchestrator } from './Orchestrator';
 
@@ -87,10 +87,10 @@ test('should initiate 1 with autoscale to 3 & handle incoming requests', async (
     });
 
     const completed = [];
-    pAll.push(main.handleIncomingRequest(new Request('/myService/test?delay=20', RequestMethods.GET, 'A')).then((x) => completed.push(x.body)));
-    pAll.push(main.handleIncomingRequest(new Request('/myService/test?delay=5', RequestMethods.GET, 'B')).then((x) => completed.push(x.body)));
-    pAll.push(main.handleIncomingRequest(new Request('/myService/test?delay=50', RequestMethods.GET, 'C')).then((x) => completed.push(x.body)));
-    pAll.push(main.handleIncomingRequest(new Request('/myService/test?delay=30', RequestMethods.GET, 'D')).then((x) => completed.push(x.body)));
+    pAll.push(main.handleIncomingRequest(new RequestX('/myService/test?delay=20', RequestMethods.GET, 'A')).then((x) => completed.push(x.body)));
+    pAll.push(main.handleIncomingRequest(new RequestX('/myService/test?delay=5', RequestMethods.GET, 'B')).then((x) => completed.push(x.body)));
+    pAll.push(main.handleIncomingRequest(new RequestX('/myService/test?delay=50', RequestMethods.GET, 'C')).then((x) => completed.push(x.body)));
+    pAll.push(main.handleIncomingRequest(new RequestX('/myService/test?delay=30', RequestMethods.GET, 'D')).then((x) => completed.push(x.body)));
 
     await Promise.all(pAll);
 
@@ -134,7 +134,7 @@ test('should auto scale on load', async (done) => {
     for (let i = 0; i < 10; i++) {
         pAll.push(
             main
-                .handleIncomingRequest(new Request('/myService/test?delay=' + libx.randomNumber(10), RequestMethods.GET, 'A'))
+                .handleIncomingRequest(new RequestX('/myService/test?delay=' + libx.randomNumber(10), RequestMethods.GET, 'A'))
                 .then((x) => completed.push(x.body))
         );
     }

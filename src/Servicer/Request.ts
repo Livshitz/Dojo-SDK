@@ -21,7 +21,7 @@ export interface IRequest {
     getAgeMS: () => number;
 }
 
-export class Request implements IRequest {
+export class RequestX implements IRequest {
     reqId: string;
     path: string;
     method: RequestMethods;

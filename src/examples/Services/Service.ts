@@ -1,7 +1,7 @@
 import { browserHelpers } from 'libx.js/build/browser/browserHelpers';
 import { libx } from 'libx.js/build/bundles/node.essentials';
 import { log } from 'libx.js/build/modules/log';
-import { Mapping } from 'libx.js/src/types/interfaces';
+import { Mapping } from 'libx.js/build/types/interfaces';
 import { helpers } from 'libx.js/build/helpers/index';
 import { IService } from '../../Servicer/IService';
 import { IRequest } from '../../Servicer/Request';
@@ -59,7 +59,7 @@ export class Service extends BaseService {
     protected async handler_testA(request: IRequest) {
         const obj = await this.db.get('col', '618230709af3ade104bee1ff');
         console.log('handler_testA', request, obj);
-        await this.db.write('col', { a: 1 });
+        await this.db.insert('col', { a: 1 });
     }
 
     protected async handler_testB(request: IRequest) {

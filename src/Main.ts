@@ -7,7 +7,7 @@ import { Consumer } from './MessageQueue/Consumer';
 import { CronScheduler } from './Scheduler/CronScheduler';
 import { ScheduleFormatParser } from './Scheduler/ScheduleFormatParser';
 import { Database } from './DB/Database';
-import { Key } from 'libx.js/src/types/interfaces';
+import { Key } from 'libx.js/build/types/interfaces';
 import fs from 'fs';
 import Exception from 'libx.js/build/helpers/Exceptions';
 import { DiskPersistencyManager } from './DB/PersistencyManagers/Disk';
@@ -39,7 +39,7 @@ export default class App {
             libx.startMeasure('write_time');
             const pAll = [];
             for (let i = 0; i <= amount; i++) {
-                await db.write(col, { a: i, i });
+                await db.insert(col, { a: i, i });
                 // pAll.push(db.write(col, { a: i, i }));
                 // console.log(id);
             }

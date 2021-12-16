@@ -35,8 +35,8 @@ export class BaseService implements IService {
         this.isBusy = true;
 
         const url = helpers.parseUrl(request.path);
-        const handler = this.handlers['/' + url.path];
-        if (handler != null) handler(request);
+        const handler = this.handlers['/' + url?.path];
+        if (handler != null) await handler(request);
         else this.handler_default(request);
 
         log.d(
@@ -49,7 +49,7 @@ export class BaseService implements IService {
             `path: ${request.path}`
         );
         this.isBusy = false;
-        request.response = request.body + ':' + this.identifier;
+        request.response = (request.body ? request.body + ':' : '') + this.identifier;
         this.jobsTreated++;
     }
     public teardown() {
@@ -69,4 +69,4 @@ export class BaseService implements IService {
     }
 }
 
-type Handler = (request: IRequest) => Promise<IRequest | void>;
+type Handler<T = any> = (request: IRequest) => Promise<IRequest | void | T>;

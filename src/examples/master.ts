@@ -4,7 +4,7 @@ import Program from 'libx.js/build/node/Program';
 import { log } from 'libx.js/build/modules/log';
 import { Master } from '../Master';
 import { Service } from './Services/Service';
-import { IRequest, Request, RequestMethods } from '../Servicer/Request';
+import { IRequest, RequestX, RequestMethods } from '../Servicer/Request';
 import { DiskPersistencyManager } from '../DB/PersistencyManagers/Disk';
 import { MyWorker } from './MQ/MyWorker';
 import { delay } from 'libx.js/node_modules/concurrency.libx.js';
@@ -22,7 +22,7 @@ const conf = {
 class Script implements IScript<typeof conf> {
     public async executeAsScript(config: typeof conf): Promise<void> {
         const master = new Master();
-        await master.addDB(new DiskPersistencyManager('./.tmp/db.json'), {
+        await master.addDB(new DiskPersistencyManager('./.tmp/db.json', true), {
             col: {
                 '618230709af3ade104bee1ff': {
                     a: 100,
@@ -56,21 +56,21 @@ class Script implements IScript<typeof conf> {
             SchedulerTypes.Recurring
         );
 
-        await master.request(new Request('/my-resource/getSomething', RequestMethods.GET));
+        await master.request(new RequestX('/my-resource/getSomething', RequestMethods.GET));
         // await master.request(new Request('/my/testx', RequestMethods.GET));
 
         const input = await libx.node.prompts.readKey(async (k) => {
             if (k == 'i') {
                 log.i('Inserting bulk messages');
                 for (let i = 0; i < 100; i++) {
-                    master.request(new Request('/my-resource/test?delay=' + libx.randomNumber(1000), RequestMethods.GET, 'Bulk'));
+                    master.request(new RequestX('/my-resource/test?delay=' + libx.randomNumber(1000), RequestMethods.GET, 'Bulk'));
                 }
             } else if (k == 'a') {
                 log.i('Inserting message A');
-                master.request(new Request('/my-resource/testA?delay=' + libx.randomNumber(1000), RequestMethods.GET, 'A'));
+                master.request(new RequestX('/my-resource/testA?delay=' + libx.randomNumber(1000), RequestMethods.GET, 'A'));
             } else if (k == 'b') {
                 log.i('Inserting message B');
-                master.request(new Request('/my-resource/testB?delay=' + libx.randomNumber(1000), RequestMethods.GET, 'B'));
+                master.request(new RequestX('/my-resource/testB?delay=' + libx.randomNumber(1000), RequestMethods.GET, 'B'));
             } else if (k == 'q') {
                 log.i('quitting...');
                 return false;
