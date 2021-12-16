@@ -1,8 +1,9 @@
 import { libx } from 'libx.js/build/bundles/node.essentials';
 import { Callbacks } from 'libx.js/build/modules/Callbacks';
 import DeepProxy from 'libx.js/build/modules/DeepProxy';
-import { DynamicProps, ObjectLiteral, Mapping, Deferred } from 'libx.js/src/types/interfaces';
-import { FindPredicate, generateId, ID, NoSqlStructure, OBJ } from '.';
+import { DynamicProps, ObjectLiteral, Mapping, Deferred } from 'libx.js/build/types/interfaces';
+import { FindPredicate, generateId, ID, NoSqlStructure, DTO } from '.';
+import { DiskPersistencyManager } from './PersistencyManagers/Disk';
 import { IPersistencyManager } from './PersistencyManagers/IPersistencyManager';
 import { MemoryPersistencyManager } from './PersistencyManagers/Memory';
 // import { PersistencyManager } from './PersistencyManagers/Disk';
@@ -19,9 +20,11 @@ export class Database {
         this.onStart();
         if (this.options.persistOnTerminate) libx.node.onExit(this.onTerminate.bind(this));
         libx.node.catchErrors();
+
+        this.options.persistencyManager.onChangeEvent?.subscribe(this.onDbExternalChange.bind(this));
     }
 
-    public async get<T extends OBJ>(collection: string, id: ID) {
+    public async get<T extends DTO>(collection: string, id: ID) {
         this.checkDataReady();
         let col = this.collections[collection];
         if (col == null) {
@@ -30,19 +33,22 @@ export class Database {
         return col[id] as T;
     }
 
-    public async find<T extends OBJ>(collection: string, predicate: FindPredicate) {
+    public async find<T extends DTO>(collection: string, predicate: FindPredicate<T>) {
         this.checkDataReady();
         const col = this.collections[collection];
-        const res = [];
+        const res: T[] = [];
         for (let key in col) {
-            const item = col[key];
-            if (predicate(item as T, res.length)) res.push(item);
+            const item = <T>col[key];
+            if (predicate(item as T, res.length)) {
+                item._id = key;
+                res.push(item);
+            }
         }
         if (res.length == 0) return null;
         return res;
     }
 
-    public async findOne<T extends OBJ>(collection: string, predicate: FindPredicate) {
+    public async findOne<T extends DTO>(collection: string, predicate: FindPredicate<T>) {
         this.checkDataReady();
         return this.find<T>(collection, (x, count) => count < 1 && predicate(x, count));
     }
@@ -51,27 +57,33 @@ export class Database {
         await this.options.persistencyManager.write({}, this.options.compactJson);
     }
 
-    public async write<T extends OBJ>(collection: string, obj: T) {
+    public async insert<T extends DTO>(collection: string, obj: T) {
         this.checkDataReady();
         await this.createCollectionIfMissing(collection);
 
         if (obj._id == null) obj._id = generateId();
         this.collections[collection][obj._id] = obj;
+
+        this.tryContinuosWrite();
+
         return obj._id;
     }
 
-    public async update<T extends OBJ>(collection: string, id: ID, subset: Partial<T>) {
+    public async update<T extends DTO>(collection: string, id: ID, subset: Partial<T>) {
         this.checkDataReady();
         await this.createCollectionIfMissing(collection);
 
         const col = this.collections[collection];
-        return (col[id] = libx.ObjectHelpers.merge(col[id], subset));
+        col[id] = libx.ObjectHelpers.merge(col[id], subset);
+
+        this.tryContinuosWrite();
     }
 
     public async delete(collection: string, id: ID) {
         this.checkDataReady();
         const col = this.collections[collection];
         delete col[id];
+        this.tryContinuosWrite();
     }
 
     private async onStart() {
@@ -79,8 +91,10 @@ export class Database {
         if (this.options.initialData == null) {
             this.collections = (await this.options.persistencyManager.read()) || {};
         } else {
-            await this.options.persistencyManager.write(this.options.initialData, this.options.compactJson);
-            this.collections = this.options.initialData;
+            const existing = await this.options.persistencyManager.read();
+            const merged = { ...existing, ...this.options.initialData };
+            await this.options.persistencyManager.write(merged, this.options.compactJson);
+            this.collections = merged;
         }
         this.onReady.resolve();
     }
@@ -90,6 +104,10 @@ export class Database {
     }
 
     private async onTerminate(opts?: Object, exitCode?: number) {
+        if (opts != null && exitCode != null) {
+            libx.log.v('DB:onTerminate: Program exited unexpectedly, avoiding write...', opts.toString(), exitCode.toString());
+            return;
+        }
         libx.log.v('DB:onTerminate: Saving...');
         await this.options.persistencyManager.write(this.collections, this.options.compactJson);
         libx.log.v('DB:onTerminate: Saved');
@@ -105,6 +123,17 @@ export class Database {
         if (this.collections != null) return true;
         throw 'LocalDatabase: Data not ready, use `.onReady promise to await for it`';
     }
+
+    private async tryContinuosWrite() {
+        if (!this.options.continuosWrite) return;
+
+        await this.options.persistencyManager.write(this.collections, this.options.compactJson);
+    }
+
+    private async onDbExternalChange() {
+        libx.log.v('Database:onDbExternalChange: file changed!');
+        this.collections = await this.options.persistencyManager.read();
+    }
 }
 
 export class ModuleOptions {
@@ -112,4 +141,5 @@ export class ModuleOptions {
     public compactJson = false;
     public persistencyManager: IPersistencyManager = new MemoryPersistencyManager();
     public initialData: NoSqlStructure;
+    public continuosWrite = false;
 }

@@ -18,6 +18,10 @@
         "esModuleInterop": true,
         "declaration": true,
 
-        "types": ["jest", "node", "libx.js", "faker"]
+        "types": ["jest", "node", "libx.js", "faker"],
+
+        "paths": {
+			"libx.js/build/*": ["libx.js/src/*", "./node_modules/libx.js/src/*"],
+        }
     }
 }

@@ -4,7 +4,7 @@ import Program from 'libx.js/build/node/Program';
 import { log } from 'libx.js/build/modules/log';
 import { Orchestrator } from '../../Servicer/Orchestrator';
 import { Service } from './Service';
-import { IRequest, Request, RequestMethods } from '../../Servicer/Request';
+import { IRequest, RequestX, RequestMethods } from '../../Servicer/Request';
 import { IService } from '../../Servicer/IService';
 
 log.isDebug = true;
@@ -16,7 +16,7 @@ const conf = {
 // $ node build/examples/Services/index.js
 class Script implements IScript<typeof conf> {
     public async executeAsScript(config: typeof conf, env: string = Program.args.env, envConf): Promise<void> {
-        // log.verbose('Script: Execute: ', 'config:', config, 'env:', env, 'envConf: ', envConf.baseUrl);
+        log.verbose('Script: Execute: ', 'config:', config, 'env:', env, 'envConf: ', envConf?.baseUrl);
 
         const servicer = new Orchestrator(Service.new, 1, 10);
         await servicer.initiate();
@@ -46,14 +46,14 @@ class Script implements IScript<typeof conf> {
             if (k == 'i') {
                 log.i('Inserting bulk messages');
                 for (let i = 0; i < 100; i++) {
-                    servicer.handleIncomingRequest(new Request('/myService/test?delay=' + libx.randomNumber(1000), RequestMethods.GET, 'Bulk'));
+                    servicer.handleIncomingRequest(new RequestX('/myService/test?delay=' + libx.randomNumber(1000), RequestMethods.GET, 'Bulk'));
                 }
             } else if (k == 'a') {
                 log.i('Inserting message A');
-                servicer.handleIncomingRequest(new Request('/myService/test?delay=' + libx.randomNumber(1000), RequestMethods.GET, 'A'));
+                servicer.handleIncomingRequest(new RequestX('/myService/test?delay=' + libx.randomNumber(1000), RequestMethods.GET, 'A'));
             } else if (k == 'b') {
                 log.i('Inserting message B');
-                servicer.handleIncomingRequest(new Request('/myService/test?delay=' + libx.randomNumber(1000), RequestMethods.GET, 'B'));
+                servicer.handleIncomingRequest(new RequestX('/myService/test?delay=' + libx.randomNumber(1000), RequestMethods.GET, 'B'));
             } else if (k == 'q') {
                 log.i('quitting...');
                 return false;

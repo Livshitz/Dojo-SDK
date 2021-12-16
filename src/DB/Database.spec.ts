@@ -6,7 +6,7 @@ test('should do basic write, retrieve and find', async (done) => {
     const db = new Database({ persistOnTerminate: false });
     await db.onReady;
     const col = 'myCollection';
-    const id = await db.write(col, {
+    const id = await db.insert(col, {
         a: 1,
         b: 2,
     });
@@ -34,7 +34,7 @@ test('should perform well with large dataset', async (done) => {
     const amount = 10000;
     libx.startMeasure('write_time');
     for (let i = 0; i <= amount; i++) {
-        await db.write(col, { a: 'hello world', i });
+        await db.insert(col, { a: 'hello world', i });
     }
     const dur_write = libx.peekMeasure('write_time');
     // console.log(dur_write);
