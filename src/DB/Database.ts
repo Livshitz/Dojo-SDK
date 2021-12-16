@@ -77,6 +77,7 @@ export class Database {
         col[id] = libx.ObjectHelpers.merge(col[id], subset);
 
         this.tryContinuosWrite();
+        return col[id];
     }
 
     public async delete(collection: string, id: ID) {
