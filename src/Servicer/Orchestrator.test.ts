@@ -2,7 +2,7 @@ import { libx } from 'libx.js/build/bundles/node.essentials';
 import { log } from 'libx.js/build/modules/log';
 import { browserHelpers } from 'libx.js/build/browser/browserHelpers';
 import { delay } from 'libx.js/node_modules/concurrency.libx.js';
-import { IRequest, RequestX, RequestMethods } from './Request';
+import { IRequest, RequestX, RequestMethods, IResponse } from './Request';
 import { IService } from './IService';
 import { Orchestrator } from './Orchestrator';
 
@@ -24,7 +24,7 @@ class Service implements IService {
     public bootstrap() {
         log.d('Service:bootstrap: ');
     }
-    public async handle(request: IRequest) {
+    public async handle(request: IRequest, res: IResponse) {
         this.isBusy = true;
         const delayTime = browserHelpers.queryString('delay', request.path) || libx.randomNumber(1000 * 2) + 200;
         await delay(delayTime);
@@ -38,7 +38,7 @@ class Service implements IService {
             `counter; ${this.jobsTreated + 1}`
         );
         this.isBusy = false;
-        request.response = request.body + ':' + this.identifier;
+        res.body = request.body; // + ':' + this.identifier;
         this.jobsTreated++;
     }
     public teardown() {

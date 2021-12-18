@@ -4,7 +4,7 @@ import { log } from 'libx.js/build/modules/log';
 import { Mapping } from 'libx.js/build/types/interfaces';
 import { helpers } from 'libx.js/build/helpers/index';
 import { IService } from '../../Servicer/IService';
-import { IRequest } from '../../Servicer/Request';
+import { IRequest, IResponse } from '../../Servicer/Request';
 import { Database } from '../../DB/Database';
 import Exception from 'libx.js/build/helpers/Exceptions';
 import { MessageQueueManager } from '../../MessageQueue/MessageQueueManager';
@@ -21,7 +21,7 @@ export class Service extends BaseService {
         };
     }
 
-    public async handle(request: IRequest) {
+    public async handle(request: IRequest, res: IResponse) {
         this.isBusy = true;
 
         const url = helpers.parseUrl(request.path);
@@ -39,7 +39,7 @@ export class Service extends BaseService {
             `path: ${request.path}`
         );
         this.isBusy = false;
-        request.response = request.body + ':' + this.identifier;
+        res.body = request.body + ':' + this.identifier;
         this.jobsTreated++;
     }
 

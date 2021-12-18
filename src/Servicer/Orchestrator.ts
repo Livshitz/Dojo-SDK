@@ -1,5 +1,5 @@
 import { IService } from './IService';
-import { IRequest } from './Request';
+import { IRequest, IResponse } from './Request';
 import { Queue } from 'libx.js/build/modules/Queue';
 import { Callbacks } from 'libx.js/build/modules/Callbacks';
 import { log, LogLevel } from 'libx.js/build/modules/log';
@@ -32,7 +32,7 @@ export class Orchestrator {
         };
     }
 
-    public async handleIncomingRequest(request: IRequest): Promise<IRequest> {
+    public async handleIncomingRequest(request: IRequest): Promise<IResponse> {
         log.d('Orchestrator:handleIncomingRequest: New incoming request', request);
         if (request.promise == null) request.promise = libx.newPromise();
         this.queue.enqueue(request);
@@ -83,7 +83,8 @@ export class Orchestrator {
         const request = this.queue.dequeue();
         let p: Promise<any>;
         log.d('Orchestrator:treat: Treating...');
-        p = instance.handle(request);
+        const res = <IResponse>{};
+        p = instance.handle(request, res);
         if (this.isBusy == false) {
             this.isBusy = true;
             this.getStats().then((stats) => {
@@ -92,7 +93,7 @@ export class Orchestrator {
         }
         p.then(() => {
             this.onJobCompleted.trigger(request);
-            request.promise.resolve(request);
+            request.promise.resolve(res);
         });
         return p;
     }
