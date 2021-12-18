@@ -1,4 +1,8 @@
-# 🤓 interview-sdk
+# 🤓 CoDojo
+![dojo](https://user-images.githubusercontent.com/246724/146655103-c0251ddb-11e9-4fac-8013-76c21ae0ab1a.jpg)  
+
+<!-- ![240_F_118955914_oq39bNOCus3oRpRD0MGRz5wav13J5iUj](https://user-images.githubusercontent.com/246724/146655063-4e905438-9c40-4d08-978c-7bd8525430f7.jpg) -->
+
 
 TBD
 <!-- 
