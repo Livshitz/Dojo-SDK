@@ -99,7 +99,7 @@ export class Orchestrator {
     }
 
     private async onJobCompletedCallback(request: IRequest) {
-        log.d('Orchestrator:onJobCompletedCallback', request.reqId.substr(-4));
+        log.d('Orchestrator:onJobCompletedCallback', request.reqId.substring(-4));
         this.treat();
     }
 

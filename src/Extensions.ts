@@ -3,5 +3,5 @@ declare interface String {
 }
 
 String.prototype.replaceAt = function (index, replacement) {
-    return this.substr(0, index) + replacement + this.substr(index + replacement.length);
+    return this.substring(0, index) + replacement + this.substring(index + replacement.length);
 };
