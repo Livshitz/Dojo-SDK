@@ -1,10 +1,10 @@
-import { IRequest } from './Request';
+import { IRequest, IResponse } from './Request';
 
 export interface IService<T = any> {
     id?: String;
 
     bootstrap?: () => void;
-    handle: (request: IRequest) => Promise<T> | T;
+    handle: (request: IRequest, res?: IResponse) => Promise<T> | T;
     teardown?: () => void;
     getIsBusy?: () => Promise<boolean>;
 

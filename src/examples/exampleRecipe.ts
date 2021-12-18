@@ -4,7 +4,7 @@ import { BaseRecipe, ModuleOptions as BaseRecipeOptions } from '../BaseRecipe';
 import { DiskPersistencyManager } from '../DB/PersistencyManagers/Disk';
 import { SchedulerTypes } from '../Scheduler/CronScheduler';
 import { BaseService } from '../Servicer/BaseService';
-import { IRequest } from '../Servicer/Request';
+import { IRequest, IResponse, ResponseTypes } from '../Servicer/Request';
 
 // run: node build/examples/exampleRecipe.js
 export class ExampleRecipe extends BaseRecipe {
@@ -45,9 +45,11 @@ export class ExampleRecipe extends BaseRecipe {
             '/test',
             () =>
                 new (class extends BaseService {
-                    async handle(req: IRequest) {
+                    async handle(req: IRequest, res: IResponse) {
                         log.i('Service:', req);
-                        req.response = { a: `hello!? from ${this.identifier}` };
+                        res.body = { a: `hello!? from ${this.identifier}`, ...req };
+                        res.type = ResponseTypes.OK;
+                        return res;
                         // super.handle(req);
                     }
                 })(),

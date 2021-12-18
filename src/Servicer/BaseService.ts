@@ -5,7 +5,7 @@ import { Mapping } from 'libx.js/src/types/interfaces';
 import { helpers } from 'libx.js/build/helpers/index';
 import Exception from 'libx.js/build/helpers/Exceptions';
 import { IService } from './IService';
-import { IRequest } from './Request';
+import { IRequest, IResponse } from './Request';
 import { Database } from '../DB/Database';
 import { MessageQueueManager } from '../MessageQueue/MessageQueueManager';
 
@@ -31,7 +31,7 @@ export class BaseService implements IService {
         log.d('BaseService:bootstrap: ');
     }
 
-    public async handle(request: IRequest) {
+    public async handle<T = any>(request: IRequest, res?: IResponse): Promise<void | IResponse<T>> {
         this.isBusy = true;
 
         const url = helpers.parseUrl(request.path);
@@ -49,8 +49,10 @@ export class BaseService implements IService {
             `path: ${request.path}`
         );
         this.isBusy = false;
-        request.response = (request.body ? request.body + ':' : '') + this.identifier;
+        res.body = (request.body ? request.body + ':' : '') + this.identifier;
         this.jobsTreated++;
+
+        return res;
     }
     public teardown() {
         log.d('BaseService:teardown: ');

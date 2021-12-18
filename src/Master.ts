@@ -36,7 +36,8 @@ export class Master {
         const service = this.services[prefix];
         if (service == null) throw new Exception('Master:request: Could not locate service for given route', { request, prefix });
         request.path = request.path.substring(prefix.length);
-        return await service.handleIncomingRequest(request);
+        const ret = await service.handleIncomingRequest(request);
+        return ret;
     }
 
     public async addDB(
