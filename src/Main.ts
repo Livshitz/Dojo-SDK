@@ -115,7 +115,7 @@ export default class App {
                 {
                     get: (target, path, key) => {
                         if (key == 'toJSON') return null;
-                        const deepPath = (path + '/' + key.toString()).substr(1);
+                        const deepPath = (path + '/' + key.toString()).substring(1);
                         const [collection, id, ...rest] = deepPath.split('/');
                         const sep = deepPath.lastIndexOf('/') == -1 ? 0 : deepPath.lastIndexOf('/');
                         const parentPath = deepPath.slice(0, sep);
@@ -145,7 +145,7 @@ export default class App {
                         if (path == '') return null;
                     },
                     preSet: (target, path, key, value) => {
-                        const deepPath = (path + '/' + key.toString()).substr(1);
+                        const deepPath = (path + '/' + key.toString()).substring(1);
                         const [collection, id, ...rest] = deepPath.split('/');
 
                         const sep = deepPath.lastIndexOf('/') == -1 ? 0 : deepPath.lastIndexOf('/');

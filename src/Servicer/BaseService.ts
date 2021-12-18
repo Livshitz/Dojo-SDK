@@ -42,7 +42,7 @@ export class BaseService implements IService {
         log.d(
             'BaseService:handle: ',
             request.body,
-            request.reqId.substr(-4),
+            request.reqId.substring(-4),
             this.identifier,
             `${request.getAgeMS()}ms`,
             `counter; ${this.jobsTreated + 1}`,

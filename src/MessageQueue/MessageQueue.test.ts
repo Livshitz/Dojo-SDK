@@ -97,7 +97,7 @@ test('1 worker with 2 instances should treat a 2 message in order and in paralle
 test('1 worker with 3 instances should treat a 3 message in order and in parallel', async (done) => {
     const events = [];
     const checkCompleted = () => {
-        // console.log(events);
+        console.log(events);
         if (
             events.join(';') ==
             ['msg1 enqueue', 'msg2 enqueue', 'msg3 enqueue', 'msg1 treated by queue1:0', 'msg2 treated by queue1:1', 'msg3 treated by queue1:2'].join(';')
