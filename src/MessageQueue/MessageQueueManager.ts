@@ -1,4 +1,4 @@
-import { Mapping } from 'libx.js/src/types/interfaces';
+import { Mapping } from 'libx.js/build/types/interfaces';
 import { Consumer, Delegate } from './Consumer';
 import { IWorker } from './IWorker';
 import { Publisher } from './Publisher';

@@ -1,7 +1,7 @@
 import { libx } from 'libx.js/build/bundles/node.essentials';
 import { log } from 'libx.js/build/modules/log';
 import { browserHelpers } from 'libx.js/build/browser/browserHelpers';
-import { delay } from 'libx.js/node_modules/concurrency.libx.js';
+import { helpers } from 'libx.js/build/helpers';
 import { IRequest, RequestX, RequestMethods, IResponse } from './Request';
 import { IService } from './IService';
 import { Orchestrator } from './Orchestrator';
@@ -27,7 +27,7 @@ class Service implements IService {
     public async handle(request: IRequest, res: IResponse) {
         this.isBusy = true;
         const delayTime = browserHelpers.queryString('delay', request.path) || libx.randomNumber(1000 * 2) + 200;
-        await delay(delayTime);
+        await helpers.delay(delayTime);
         log.d(
             'Service:handle: ',
             delayTime,
