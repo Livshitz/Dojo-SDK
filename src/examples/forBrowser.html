@@ -11,8 +11,8 @@
         <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-auth.js"></script>
         <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-database.js"></script>
 
-        <script src="https://cdn.jsdelivr.net/gh/Livshitz/dojo-sdk@latest/dist/dist/browser.min.js"></script>
-        <!-- <script src="../../dist/browser.min.js?1"></script> -->
+        <!-- <script src="https://cdn.jsdelivr.net/gh/Livshitz/dojo-sdk@latest/dist/dist/browser.min.js"></script> -->
+        <script src="../../dist/browser.min.js?1"></script>
 
         <style>
             body { background-color: #333; color: #eee; }
@@ -40,6 +40,7 @@
                     '618230709af3ade104bee1ff': {
                         a: 100,
                         _id: '618230709af3ade104bee1ff',
+                        someObjectId: dojo.ObjectId.new(),
                     },
                 },
             });
@@ -68,7 +69,7 @@
             dojo.master.addScheduler(
                 '*/10 * * * * *',
                 () => {
-                    dojo.log.i('Scheduler: TICK!', new Date());
+                    dojo.log.i('Scheduler: TICK!', dojo.ObjectId.new());
                 },
                 dojo.SchedulerTypes.Recurring
             );
