@@ -3,6 +3,9 @@ import { Master } from '../Master';
 import { BasicServer, ModuleOptions as BasicServerOptions } from 'libx.js/build/node/BasicServer';
 import { IRequest, IResponse, RequestMethods, RequestX, ResponseTypes } from './Request';
 
+/**
+ * This module starts a basic server so you can send requests to and it then passes it to the simulated Services in the Orchestrator.
+ */
 export class ServiceProxy {
     private server: BasicServer;
     public constructor(private master: Master, public options?: Partial<ModuleOptions>) {
