@@ -1,5 +1,5 @@
 import { libx } from 'libx.js/build/bundles/node.essentials';
-import { sleep } from 'libx.js/node_modules/concurrency.libx.js';
+import { helpers } from 'libx.js/build/helpers';
 import { NoSqlDatabase } from './NoSqlDatabase';
 
 test('should do basic write, retrieve and find', async (done) => {
@@ -38,7 +38,7 @@ test('should perform well with large dataset', async (done) => {
     }
     const dur_write = libx.peekMeasure('write_time');
     // console.log(dur_write);
-    expect(dur_write).toBeLessThanOrEqual(400);
+    expect(dur_write).toBeLessThanOrEqual(500);
 
     libx.startMeasure('find_time');
     const found = await db.find(col, (x) => x.i == amount);

@@ -1,7 +1,7 @@
 import { browserHelpers } from 'libx.js/build/browser/browserHelpers';
 import { libx } from 'libx.js/build/bundles/node.essentials';
 import { log } from 'libx.js/build/modules/log';
-import { Mapping } from 'libx.js/src/types/interfaces';
+import { Mapping } from 'libx.js/build/types/interfaces';
 import { helpers } from 'libx.js/build/helpers/index';
 import Exception from 'libx.js/build/helpers/Exceptions';
 import { IService } from './IService';

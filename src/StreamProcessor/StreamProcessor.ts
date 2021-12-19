@@ -1,4 +1,4 @@
-import { NotImplemented } from 'libx.js/src/helpers/Exceptions';
+import { NotImplemented } from 'libx.js/build/helpers/Exceptions';
 
 export class StreamProcessor {
     // Should mimic Kafka / Amazon Kinesis

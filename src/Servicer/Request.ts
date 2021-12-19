@@ -1,4 +1,4 @@
-import { Deferred, DynamicProperties } from 'libx.js/src/types/interfaces';
+import { Deferred, DynamicProperties } from 'libx.js/build/types/interfaces';
 import { ID, generateId } from '../DB';
 
 export enum RequestMethods {
