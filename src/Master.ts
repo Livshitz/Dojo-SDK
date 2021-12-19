@@ -12,7 +12,7 @@ import { CronScheduler, SchedulerTypes } from './Scheduler/CronScheduler';
 import { IService } from './Servicer/IService';
 import { Orchestrator } from './Servicer/Orchestrator';
 import { RequestMethods, RequestX } from './Servicer/Request';
-import { ServiceProxy } from './Servicer/ServiesProxy';
+import { ServiceProxy } from './Servicer/ServiceProxy';
 
 export class Master {
     public services: Mapping<Orchestrator> = {};
