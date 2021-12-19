@@ -6,7 +6,7 @@ import { helpers } from 'libx.js/build/helpers/index';
 import Exception from 'libx.js/build/helpers/Exceptions';
 import { IService } from './IService';
 import { IRequest, IResponse } from './Request';
-import { Database } from '../DB/Database';
+import { NoSqlDatabase } from '../DB/NoSqlDatabase';
 import { MessageQueueManager } from '../MessageQueue/MessageQueueManager';
 
 export class BaseService implements IService {
