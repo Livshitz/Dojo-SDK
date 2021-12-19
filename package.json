@@ -1,12 +1,13 @@
 {
     "name": "dojo-sdk",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "main": "build/Main.js",
     "license": "MIT",
     "author": "Elya Livshitz",
     "scripts": {
         "format": "prettier --config .prettierrc 'src/**/*.ts' 'tests/**/*.ts' --write",
         "build": "tsc",
+        "build:browser": "npx -p pax.libx.js pax-browserify src/browser.ts dist -y --minify",
         "watch": "tsc -w",
         "main": "node build/Main.js",
         "test": "jest",
@@ -30,7 +31,7 @@
         "cron-parser": "^4.1.0",
         "express": "^4.17.1",
         "faker": "^5.5.3",
-        "libx.js": "^2.15.2"
+        "libx.js": "^2.16.2"
     },
     "devDependencies": {
         "@types/express": "^4.17.13",
