@@ -25,7 +25,8 @@ See in [Dojo-Recipes](https://github.com/Livshitz/Dojo-Recipes) repo system-desi
 
 
 ## Examples:
-Check [src/examples/master.ts](/src/examples/master.ts)
+
+Check [src/examples/master.ts](/src/examples/master.ts) or [browser version](https://raw.githack.com/Livshitz/dojo-sdk/master//src/examples/forBrowser.html)
 ```typescript
 const master = new Master();
 
