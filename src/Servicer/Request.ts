@@ -1,4 +1,4 @@
-import { Deferred } from 'libx.js/src/types/interfaces';
+import { Deferred, DynamicProperties } from 'libx.js/src/types/interfaces';
 import { ID, generateId } from '../DB';
 
 export enum RequestMethods {
@@ -22,7 +22,7 @@ export interface IRequest<T = any | {}> {
     reqId: ID;
     path: string;
     method: RequestMethods;
-    headers?: {};
+    headers?: DynamicProperties;
     query?: {};
     body?: T | string;
     promise?: Deferred<IResponse>;
