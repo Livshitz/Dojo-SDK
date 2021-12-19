@@ -4,7 +4,7 @@ import Program from 'libx.js/build/node/Program';
 import { log } from 'libx.js/build/modules/log';
 import { Master } from '../Master';
 import { Service } from './Services/Service';
-import { IRequest, RequestX, RequestMethods } from '../Servicer/Request';
+import { IRequest, RequestX, RequestMethods, IResponse, ResponseTypes } from '../Servicer/Request';
 import { DiskPersistencyManager } from '../DB/PersistencyManagers/Disk';
 import { MyWorker } from './MQ/MyWorker';
 import { delay } from 'libx.js/node_modules/concurrency.libx.js';
@@ -18,6 +18,7 @@ const conf = {
     envs: {},
 };
 
+// Run:
 // $ node build/examples/master.js
 class Script implements IScript<typeof conf> {
     public async executeAsScript(config: typeof conf): Promise<void> {
@@ -37,17 +38,20 @@ class Script implements IScript<typeof conf> {
         await master.addMQ('queue1', new MyWorker());
         // await master.addMQ('queue1', { treat: (item) => console.log('----', item) });
         await master.addService('/my-resource', Service.new, 1, 10);
-        // await master.addService(
-        //     '/my-resource',
-        //     () =>
-        //         new (class extends BaseService {
-        //             async handle(req: IRequest) {
-        //                 console.log('Service:', req);
-        //             }
-        //         })(),
-        //     1,
-        //     10
-        // );
+        await master.addService(
+            '/my-inline',
+            () =>
+                new (class extends BaseService {
+                    async handle(req: IRequest, res: IResponse) {
+                        console.log('Service:', req);
+                        res.type = ResponseTypes.OK;
+                        res.body = `You got it!`;
+                        return res;
+                    }
+                })(),
+            1,
+            10
+        );
         master.addScheduler(
             '*/5 * * * * *',
             () => {
@@ -57,7 +61,6 @@ class Script implements IScript<typeof conf> {
         );
 
         await master.request(new RequestX('/my-resource/getSomething', RequestMethods.GET));
-        // await master.request(new Request('/my/testx', RequestMethods.GET));
 
         const input = await libx.node.prompts.readKey(async (k) => {
             if (k == 'i') {
