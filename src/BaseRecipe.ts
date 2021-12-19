@@ -1,4 +1,3 @@
-import { node } from 'libx.js/build/node';
 import { log } from 'libx.js/build/modules/log';
 import { EventsStream } from 'libx.js/build/modules/EventsStream';
 import { NotImplemented } from 'libx.js/build/helpers/Exceptions';

@@ -1,14 +1,12 @@
-import { libx } from 'libx.js/build/bundles/node.essentials';
+import { libx } from 'libx.js/build/bundles/essentials';
 import { Callbacks } from 'libx.js/build/modules/Callbacks';
 import DeepProxy from 'libx.js/build/modules/DeepProxy';
 import { DynamicProps, ObjectLiteral, Mapping, Deferred } from 'libx.js/build/types/interfaces';
 import { FindPredicate, generateId, ID, NoSqlStructure, DTO } from '.';
-import { DiskPersistencyManager } from './PersistencyManagers/Disk';
 import { IPersistencyManager } from './PersistencyManagers/IPersistencyManager';
 import { MemoryPersistencyManager } from './PersistencyManagers/Memory';
-// import { PersistencyManager } from './PersistencyManagers/Disk';
 
-export class NoSqlDatabase {
+export class Database {
     private collections: NoSqlStructure = null;
     public onReady: Deferred = libx.newPromise();
     public options: ModuleOptions;
@@ -18,8 +16,6 @@ export class NoSqlDatabase {
 
         this.onReady.then(this.onReady_cb);
         this.onStart();
-        if (this.options.persistOnTerminate) libx.node.onExit(this.onTerminate.bind(this));
-        libx.node.catchErrors();
 
         this.options.persistencyManager.onChangeEvent?.subscribe(this.onDbExternalChange.bind(this));
     }
@@ -104,16 +100,6 @@ export class NoSqlDatabase {
         libx.log.d('DB: onReady');
     }
 
-    private async onTerminate(opts?: Object, exitCode?: number) {
-        if (opts != null && exitCode != null) {
-            libx.log.v('DB:onTerminate: Program exited unexpectedly, avoiding write...', opts.toString(), exitCode.toString());
-            return;
-        }
-        libx.log.v('DB:onTerminate: Saving...');
-        await this.options.persistencyManager.write(this.collections, this.options.compactJson);
-        libx.log.v('DB:onTerminate: Saved');
-    }
-
     private async createCollectionIfMissing(name: string) {
         if (this.collections[name] == null) {
             return (this.collections[name] = {});
@@ -138,7 +124,6 @@ export class NoSqlDatabase {
 }
 
 export class ModuleOptions {
-    public persistOnTerminate = true;
     public compactJson = false;
     public persistencyManager: IPersistencyManager = new MemoryPersistencyManager();
     public initialData: NoSqlStructure;

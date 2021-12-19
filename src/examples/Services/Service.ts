@@ -5,13 +5,13 @@ import { Mapping } from 'libx.js/build/types/interfaces';
 import { helpers } from 'libx.js/build/helpers/index';
 import { IService } from '../../Servicer/IService';
 import { IRequest, IResponse } from '../../Servicer/Request';
-import { NoSqlDatabase } from '../../DB/NoSqlDatabase';
+import { Database } from '../../DB/Database';
 import Exception from 'libx.js/build/helpers/Exceptions';
 import { MessageQueueManager } from '../../MessageQueue/MessageQueueManager';
 import { BaseService } from '../../Servicer/BaseService';
 
 export class Service extends BaseService {
-    constructor(protected db: NoSqlDatabase, protected mq: MessageQueueManager) {
+    constructor(protected db: Database, protected mq: MessageQueueManager) {
         super();
 
         this.handlers = {

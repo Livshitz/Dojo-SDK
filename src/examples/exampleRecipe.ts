@@ -1,5 +1,4 @@
 import { log } from 'libx.js/build/modules/log';
-import { node } from 'libx.js/build/node';
 import { BaseRecipe, ModuleOptions as BaseRecipeOptions } from '../BaseRecipe';
 import { DiskPersistencyManager } from '../DB/PersistencyManagers/Disk';
 import { SchedulerTypes } from '../Scheduler/CronScheduler';
@@ -57,7 +56,7 @@ export class ExampleRecipe extends BaseRecipe {
             10
         );
 
-        this.master.setupServiceProxy(); // call through: http://localhost:3000/test?q=1
+        // this.master.setupServiceProxy(); // call through: http://localhost:3000/test?q=1
 
         this.journal.broadcast('setup: end');
     }
@@ -67,6 +66,7 @@ export class ExampleRecipe extends BaseRecipe {
     }
 }
 
+/*
 if (node.isCalledDirectly()) {
     node.catchErrors();
     (async () => {
@@ -80,3 +80,4 @@ if (node.isCalledDirectly()) {
         process.exit(0); // force exit, required if run with `waitForAnyKey`
     })();
 }
+*/
