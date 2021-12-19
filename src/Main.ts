@@ -6,7 +6,7 @@ import { Publisher } from './MessageQueue/Publisher';
 import { Consumer } from './MessageQueue/Consumer';
 import { CronScheduler } from './Scheduler/CronScheduler';
 import { ScheduleFormatParser } from './Scheduler/ScheduleFormatParser';
-import { Database } from './DB/Database';
+import { NoSqlDatabase } from './DB/NoSqlDatabase';
 import { Key } from 'libx.js/build/types/interfaces';
 import fs from 'fs';
 import Exception from 'libx.js/build/helpers/Exceptions';
@@ -32,7 +32,7 @@ export default class App {
         };
 
         const testDBLoad = async () => {
-            const db = new Database();
+            const db = new NoSqlDatabase();
             const col = 'myCollection';
             const amount = 1000000;
             log.v('write: start');
@@ -54,7 +54,7 @@ export default class App {
             console.log('dur: ', dur);
         };
         const testDB = async () => {
-            const db = new Database();
+            const db = new NoSqlDatabase();
             const col = 'myCollection';
             /*
             const id = await db.write(col, {
@@ -208,7 +208,7 @@ export default class App {
         };
 
         const testLocalDB = async () => {
-            const db = new Database({ persistencyManager: new DiskPersistencyManager() });
+            const db = new NoSqlDatabase({ persistencyManager: new DiskPersistencyManager() });
             await db.onReady;
             const col = 'col';
 

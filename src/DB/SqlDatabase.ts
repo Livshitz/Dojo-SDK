@@ -2,18 +2,21 @@ import { libx } from 'libx.js/build/bundles/node.essentials';
 import { Callbacks } from 'libx.js/build/modules/Callbacks';
 import DeepProxy from 'libx.js/build/modules/DeepProxy';
 import { DynamicProps, ObjectLiteral, Mapping, Deferred } from 'libx.js/build/types/interfaces';
+import { NotImplemented } from 'libx.js/build/helpers/Exceptions';
 import { FindPredicate, generateId, ID, NoSqlStructure, DTO } from '.';
 import { DiskPersistencyManager } from './PersistencyManagers/Disk';
 import { IPersistencyManager } from './PersistencyManagers/IPersistencyManager';
 import { MemoryPersistencyManager } from './PersistencyManagers/Memory';
-// import { PersistencyManager } from './PersistencyManagers/Disk';
 
-export class Database {
+// TODO: Implement SqlDatabase. Is it justified? Or NoSqlDatabase could be generally considered as good fit for SQL DB simulations as well?
+
+export class SqlDatabase {
     private collections: NoSqlStructure = null;
     public onReady: Deferred = libx.newPromise();
     public options: ModuleOptions;
 
     constructor(options?: Partial<ModuleOptions>) {
+        throw NotImplemented;
         this.options = { ...new ModuleOptions(), ...options };
 
         this.onReady.then(this.onReady_cb);
@@ -24,70 +27,13 @@ export class Database {
         this.options.persistencyManager.onChangeEvent?.subscribe(this.onDbExternalChange.bind(this));
     }
 
-    public async get<T extends DTO>(collection: string, id: ID) {
-        this.checkDataReady();
-        let col = this.collections[collection];
-        if (col == null) {
-            col = this.collections[collection] = {};
-        }
-        return col[id] as T;
-    }
-
-    public async find<T extends DTO>(collection: string, predicate: FindPredicate<T>) {
-        this.checkDataReady();
-        const col = this.collections[collection];
-        const res: T[] = [];
-        for (let key in col) {
-            const item = <T>col[key];
-            if (predicate(item as T, res.length)) {
-                item._id = key;
-                res.push(item);
-            }
-        }
-        if (res.length == 0) return null;
-        return res;
-    }
-
-    public async findOne<T extends DTO>(collection: string, predicate: FindPredicate<T>) {
-        this.checkDataReady();
-        return this.find<T>(collection, (x, count) => count < 1 && predicate(x, count));
-    }
-
     public async resetDB() {
+        throw NotImplemented;
         await this.options.persistencyManager.write({}, this.options.compactJson);
     }
 
-    public async insert<T extends DTO>(collection: string, obj: T) {
-        this.checkDataReady();
-        await this.createCollectionIfMissing(collection);
-
-        if (obj._id == null) obj._id = generateId();
-        this.collections[collection][obj._id] = obj;
-
-        this.tryContinuosWrite();
-
-        return obj._id;
-    }
-
-    public async update<T extends DTO>(collection: string, id: ID, subset: Partial<T>) {
-        this.checkDataReady();
-        await this.createCollectionIfMissing(collection);
-
-        const col = this.collections[collection];
-        col[id] = libx.ObjectHelpers.merge(col[id], subset);
-
-        this.tryContinuosWrite();
-        return col[id];
-    }
-
-    public async delete(collection: string, id: ID) {
-        this.checkDataReady();
-        const col = this.collections[collection];
-        delete col[id];
-        this.tryContinuosWrite();
-    }
-
     private async onStart() {
+        throw NotImplemented;
         libx.log.d('DB: onStart');
         if (this.options.initialData == null) {
             this.collections = (await this.options.persistencyManager.read()) || {};
@@ -101,10 +47,12 @@ export class Database {
     }
 
     private async onReady_cb() {
+        throw NotImplemented;
         libx.log.d('DB: onReady');
     }
 
     private async onTerminate(opts?: Object, exitCode?: number) {
+        throw NotImplemented;
         if (opts != null && exitCode != null) {
             libx.log.v('DB:onTerminate: Program exited unexpectedly, avoiding write...', opts.toString(), exitCode.toString());
             return;
@@ -114,24 +62,21 @@ export class Database {
         libx.log.v('DB:onTerminate: Saved');
     }
 
-    private async createCollectionIfMissing(name: string) {
-        if (this.collections[name] == null) {
-            return (this.collections[name] = {});
-        }
-    }
-
     private checkDataReady() {
+        throw NotImplemented;
         if (this.collections != null) return true;
         throw 'LocalDatabase: Data not ready, use `.onReady promise to await for it`';
     }
 
     private async tryContinuosWrite() {
+        throw NotImplemented;
         if (!this.options.continuosWrite) return;
 
         await this.options.persistencyManager.write(this.collections, this.options.compactJson);
     }
 
     private async onDbExternalChange() {
+        throw NotImplemented;
         libx.log.v('Database:onDbExternalChange: file changed!');
         this.collections = await this.options.persistencyManager.read();
     }

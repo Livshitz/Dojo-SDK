@@ -2,7 +2,7 @@ import { libx } from 'libx.js/build/bundles/essentials';
 import Exception from 'libx.js/build/helpers/Exceptions';
 import { Mapping } from 'libx.js/build/types/interfaces';
 import { NoSqlStructure } from './DB';
-import { Database, ModuleOptions as DatabaseOptions } from './DB/Database';
+import { NoSqlDatabase, ModuleOptions as DatabaseOptions } from './DB/NoSqlDatabase';
 import { IPersistencyManager } from './DB/PersistencyManagers/IPersistencyManager';
 import { MemoryPersistencyManager } from './DB/PersistencyManagers/Memory';
 import { IWorker } from './MessageQueue/IWorker';
@@ -16,7 +16,7 @@ import { ServiceProxy } from './Servicer/ServiesProxy';
 
 export class Master {
     public services: Mapping<Orchestrator> = {};
-    public db: Database;
+    public db: NoSqlDatabase;
     public mqMgr: MessageQueueManager;
     public mq: Mapping<Publisher> = {};
     private scheduler = new CronScheduler();
@@ -46,7 +46,7 @@ export class Master {
         options?: Partial<DatabaseOptions>
     ) {
         if (this.db != null) throw new Exception('Master:addDB: DB already initiated');
-        this.db = new Database({ persistencyManager, initialData, ...options });
+        this.db = new NoSqlDatabase({ persistencyManager, initialData, ...options });
         await this.db.onReady;
         libx.di.register('db', this.db);
         return this.db;

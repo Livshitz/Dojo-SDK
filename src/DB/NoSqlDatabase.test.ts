@@ -1,9 +1,9 @@
 import { libx } from 'libx.js/build/bundles/node.essentials';
 import { sleep } from 'libx.js/node_modules/concurrency.libx.js';
-import { Database } from './Database';
+import { NoSqlDatabase } from './NoSqlDatabase';
 
 test('should do basic write, retrieve and find', async (done) => {
-    const db = new Database({ persistOnTerminate: false });
+    const db = new NoSqlDatabase({ persistOnTerminate: false });
     await db.onReady;
     const col = 'myCollection';
     const id = await db.insert(col, {
@@ -28,7 +28,7 @@ test('should do basic write, retrieve and find', async (done) => {
 test('should perform well with large dataset', async (done) => {
     // jest.setTimeout(30000);
 
-    const db = new Database({ persistOnTerminate: false });
+    const db = new NoSqlDatabase({ persistOnTerminate: false });
     await db.onReady;
     const col = 'myCollection';
     const amount = 10000;
