@@ -7,5 +7,5 @@
     },
 
     "include": ["./src/**/*.d.ts", "./src/**/*.ts"],
-    "exclude": ["node_modules/**/*", "dist", "build", "tests"]
+    "exclude": ["./src/**/*.test.ts", "node_modules/**/*", "dist", "build", "tests"]
 }
