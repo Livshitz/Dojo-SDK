@@ -1,4 +1,4 @@
-import { libx } from 'libx.js/build/bundles/node.essentials';
+import { libx } from 'libx.js/build/bundles/essentials';
 import { Publisher } from './Publisher';
 
 export class MessageEnvelop<T = any> {

@@ -1,9 +1,9 @@
-import { libx } from 'libx.js/build/bundles/node.essentials';
+import { libx } from 'libx.js/build/bundles/essentials';
 import { helpers } from 'libx.js/build/helpers';
-import { NoSqlDatabase } from './NoSqlDatabase';
+import { Database } from './Database';
 
 test('should do basic write, retrieve and find', async (done) => {
-    const db = new NoSqlDatabase({ persistOnTerminate: false });
+    const db = new Database({});
     await db.onReady;
     const col = 'myCollection';
     const id = await db.insert(col, {
@@ -28,7 +28,7 @@ test('should do basic write, retrieve and find', async (done) => {
 test('should perform well with large dataset', async (done) => {
     // jest.setTimeout(30000);
 
-    const db = new NoSqlDatabase({ persistOnTerminate: false });
+    const db = new Database({});
     await db.onReady;
     const col = 'myCollection';
     const amount = 10000;
@@ -38,7 +38,7 @@ test('should perform well with large dataset', async (done) => {
     }
     const dur_write = libx.peekMeasure('write_time');
     // console.log(dur_write);
-    expect(dur_write).toBeLessThanOrEqual(500);
+    expect(dur_write).toBeLessThanOrEqual(800);
 
     libx.startMeasure('find_time');
     const found = await db.find(col, (x) => x.i == amount);

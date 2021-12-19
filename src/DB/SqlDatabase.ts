@@ -1,4 +1,4 @@
-import { libx } from 'libx.js/build/bundles/node.essentials';
+import { libx } from 'libx.js/build/bundles/essentials';
 import { Callbacks } from 'libx.js/build/modules/Callbacks';
 import DeepProxy from 'libx.js/build/modules/DeepProxy';
 import { DynamicProps, ObjectLiteral, Mapping, Deferred } from 'libx.js/build/types/interfaces';
@@ -21,8 +21,6 @@ export class SqlDatabase {
 
         this.onReady.then(this.onReady_cb);
         this.onStart();
-        if (this.options.persistOnTerminate) libx.node.onExit(this.onTerminate.bind(this));
-        libx.node.catchErrors();
 
         this.options.persistencyManager.onChangeEvent?.subscribe(this.onDbExternalChange.bind(this));
     }

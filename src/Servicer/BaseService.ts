@@ -1,12 +1,12 @@
 import { browserHelpers } from 'libx.js/build/browser/browserHelpers';
-import { libx } from 'libx.js/build/bundles/node.essentials';
+import { libx } from 'libx.js/build/bundles/essentials';
 import { log } from 'libx.js/build/modules/log';
 import { Mapping } from 'libx.js/build/types/interfaces';
 import { helpers } from 'libx.js/build/helpers/index';
 import Exception from 'libx.js/build/helpers/Exceptions';
 import { IService } from './IService';
 import { IRequest, IResponse } from './Request';
-import { NoSqlDatabase } from '../DB/NoSqlDatabase';
+import { Database } from '../DB/Database';
 import { MessageQueueManager } from '../MessageQueue/MessageQueueManager';
 
 export class BaseService implements IService {

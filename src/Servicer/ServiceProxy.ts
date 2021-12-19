@@ -22,7 +22,7 @@ export class ServiceProxy {
                 const newReq = new RequestX(url, RequestMethods[method], body);
                 newReq.headers = headers || {};
                 newReq.headers['ip'] = ip;
-                const r: IResponse = await this.master.request(newReq);
+                const r: IResponse = <IResponse>{}; //await this.master.request(newReq);
 
                 // res.json({ query, params, url, path, method, response: r?.response });
                 res.status(this.responseTypeToHttpStatusCode(r.type)).json(r).send();

@@ -2,7 +2,7 @@ import { log, LogLevel } from 'libx.js/build/modules/log';
 import { MessageQueueManager } from './MessageQueueManager';
 import { MessageEnvelop } from './MessageEnvelop';
 import { Publisher } from './Publisher';
-import { libx } from 'libx.js/build/bundles/node.essentials';
+import { libx } from 'libx.js/build/bundles/essentials';
 
 export type Delegate<T = any> = (item: MessageEnvelop<T>, instanceIdentifier: String) => Promise<void> | void;
 

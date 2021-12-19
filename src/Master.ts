@@ -2,7 +2,7 @@ import { libx } from 'libx.js/build/bundles/essentials';
 import Exception from 'libx.js/build/helpers/Exceptions';
 import { Mapping } from 'libx.js/build/types/interfaces';
 import { NoSqlStructure } from './DB';
-import { NoSqlDatabase, ModuleOptions as DatabaseOptions } from './DB/NoSqlDatabase';
+import { Database, ModuleOptions as DatabaseOptions } from './DB/Database';
 import { IPersistencyManager } from './DB/PersistencyManagers/IPersistencyManager';
 import { MemoryPersistencyManager } from './DB/PersistencyManagers/Memory';
 import { IWorker } from './MessageQueue/IWorker';
@@ -12,11 +12,11 @@ import { CronScheduler, SchedulerTypes } from './Scheduler/CronScheduler';
 import { IService } from './Servicer/IService';
 import { Orchestrator } from './Servicer/Orchestrator';
 import { RequestMethods, RequestX } from './Servicer/Request';
-import { ServiceProxy } from './Servicer/ServiceProxy';
+// import { ServiceProxy } from './Servicer/ServiceProxy';
 
 export class Master {
     public services: Mapping<Orchestrator> = {};
-    public db: NoSqlDatabase;
+    public db: Database;
     public mqMgr: MessageQueueManager;
     public mq: Mapping<Publisher> = {};
     private scheduler = new CronScheduler();
@@ -31,7 +31,13 @@ export class Master {
         return newService;
     }
 
-    public async request(request: RequestX) {
+    public async request(path: string, method: RequestMethods, body?: {}, options?: Partial<RequestX>) {
+        let req: Partial<RequestX> = new RequestX(path, method, body);
+        req = { ...req, ...options };
+        return await this.requestWithReq(req as RequestX);
+    }
+
+    private async requestWithReq(request: RequestX) {
         const prefix = libx.getMatch(request.path, /(\/[^\/\?\#]*)\/?/)?.[0];
         const service = this.services[prefix];
         if (service == null) throw new Exception('Master:request: Could not locate service for given route', { request, prefix });
@@ -46,7 +52,7 @@ export class Master {
         options?: Partial<DatabaseOptions>
     ) {
         if (this.db != null) throw new Exception('Master:addDB: DB already initiated');
-        this.db = new NoSqlDatabase({ persistencyManager, initialData, ...options });
+        this.db = new Database({ persistencyManager, initialData, ...options });
         await this.db.onReady;
         libx.di.register('db', this.db);
         return this.db;
@@ -69,9 +75,11 @@ export class Master {
         else throw new Exception('Master:addScheduler: Unrecognized scheduler type', schedulerType, recurrence);
     }
 
-    public async setupServiceProxy(port?: number) {
-        const options = port != null ? { port } : null;
-        const proxyServer = new ServiceProxy(this, options);
-        await proxyServer.init();
-    }
+    // TODO: Commented out to enable browserify of `Master`. Find a way to replace ServiceProxy with browser-compatible alternative
+
+    // public async setupServiceProxy(port?: number) {
+    //     const options = port != null ? { port } : null;
+    //     const proxyServer = new ServiceProxy(this, options);
+    //     await proxyServer.init();
+    // }
 }

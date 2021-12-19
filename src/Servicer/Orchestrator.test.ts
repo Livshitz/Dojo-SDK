@@ -87,10 +87,10 @@ test('should initiate 1 with autoscale to 3 & handle incoming requests', async (
     });
 
     const completed = [];
-    pAll.push(main.handleIncomingRequest(new RequestX('/myService/test?delay=20', RequestMethods.GET, 'A')).then((x) => completed.push(x.body)));
-    pAll.push(main.handleIncomingRequest(new RequestX('/myService/test?delay=5', RequestMethods.GET, 'B')).then((x) => completed.push(x.body)));
-    pAll.push(main.handleIncomingRequest(new RequestX('/myService/test?delay=50', RequestMethods.GET, 'C')).then((x) => completed.push(x.body)));
-    pAll.push(main.handleIncomingRequest(new RequestX('/myService/test?delay=30', RequestMethods.GET, 'D')).then((x) => completed.push(x.body)));
+    pAll.push(main.handleIncomingRequest(new RequestX('/myService/test?delay=30', RequestMethods.GET, 'A')).then((x) => completed.push(x.body)));
+    pAll.push(main.handleIncomingRequest(new RequestX('/myService/test?delay=2', RequestMethods.GET, 'B')).then((x) => completed.push(x.body)));
+    pAll.push(main.handleIncomingRequest(new RequestX('/myService/test?delay=80', RequestMethods.GET, 'C')).then((x) => completed.push(x.body)));
+    pAll.push(main.handleIncomingRequest(new RequestX('/myService/test?delay=40', RequestMethods.GET, 'D')).then((x) => completed.push(x.body)));
 
     await Promise.all(pAll);
 
