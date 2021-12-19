@@ -9,7 +9,7 @@ import { DiskPersistencyManager } from '../DB/PersistencyManagers/Disk';
 import { MyWorker } from './MQ/MyWorker';
 import { SchedulerTypes } from '../Scheduler/CronScheduler';
 import { BaseService } from '../Servicer/BaseService';
-import faker from '../Faker';
+import faker from 'faker';
 
 log.isDebug = true;
 
