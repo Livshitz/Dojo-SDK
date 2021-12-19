@@ -9,7 +9,7 @@
 ⛩ Dojo-SDK is a framework that provides components simulating contract and behavior of real-world system components like database, auto-scaled services and even message queues.  
 Inspired from [Dojo halls](https://en.wikipedia.org/wiki/Dojo), where participants are using [Wing Chun Dummy (Mu ren zhuang)](https://en.wikipedia.org/wiki/Mu_ren_zhuang) to learn and practice on dummies before going to real world.  
 With Dojo-SDK you can practice real-world and a complete system designs & concepts. It is designed to be deterministic and re-playable so you could even test your concepts with unit-tests tools.  
-With a few commands on a single [`master`](#features) handler you can spawn local DB, messages queue, micro-service & orchestrator and a scheduler.  
+With a few commands on a single [`master`](#examples) handler you can spawn local DB, messages queue, micro-service & orchestrator and a scheduler.  
 See in [Dojo-Recipes](https://github.com/Livshitz/Dojo-Recipes) repo system-design challenges in which you can practice and implement using Dojo-SDK. 
 
 
