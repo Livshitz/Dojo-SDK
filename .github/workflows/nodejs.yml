@@ -21,13 +21,13 @@ jobs:
                 node-version: [16.x]
 
         steps:
-            - name: build
             - uses: actions/checkout@v2
             - uses: actions/setup-node@v1
               with:
                   node-version: ${{ matrix.node-version }}
                   registry-url: 'https://registry.npmjs.org'
                   scope: '@octocat'
+            - name: build
             - run: yarn --frozen-lockfile
             - run: yarn build
             - run: yarn test
