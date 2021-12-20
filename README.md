@@ -11,7 +11,7 @@ Inspired from [Dojo halls](https://en.wikipedia.org/wiki/Dojo), where participan
 With Dojo-SDK you can practice real-world and a complete system designs & concepts. It is designed to be deterministic and re-playable so you could even test your concepts with unit-tests tools.  
 With a few commands on a single [`master`](#examples) handler you can spawn local DB, messages queue, micro-service & orchestrator and a scheduler.  
 See in [Dojo-Recipes](https://github.com/Livshitz/Dojo-Recipes) repo system-design challenges in which you can practice and implement using Dojo-SDK.  
-And the best part, it can all run within your browser or node environments 🎉.
+And the best part, it can all [run within your browser](https://raw.githack.com/Livshitz/dojo-sdk/master//src/examples/forBrowser.html) or node environments 🎉.
 
 ## Features:
 1. ⭐️ Database: CRUD and query operations with multiple persistency options, memory and disk. Stores the data on a local JSON file so you can see in real time changes and actually intercept and change values directly and alter the running DB.
