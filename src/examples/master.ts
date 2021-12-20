@@ -59,20 +59,20 @@ class Script implements IScript<typeof conf> {
             SchedulerTypes.Recurring
         );
 
-        await master.request(new RequestX('/my-resource/getSomething', RequestMethods.GET));
+        await master.request('/my-resource/getSomething');
 
         const input = await libx.node.prompts.readKey(async (k) => {
             if (k == 'i') {
                 log.i('Inserting bulk messages');
                 for (let i = 0; i < 100; i++) {
-                    master.request(new RequestX('/my-resource/test?delay=' + libx.randomNumber(1000), RequestMethods.GET, 'Bulk'));
+                    master.request('/my-resource/test?delay=' + libx.randomNumber(1000), RequestMethods.GET, 'Bulk');
                 }
             } else if (k == 'a') {
                 log.i('Inserting message A');
-                master.request(new RequestX('/my-resource/testA?delay=' + libx.randomNumber(1000), RequestMethods.GET, 'A'));
+                master.request('/my-resource/testA?delay=' + libx.randomNumber(1000), RequestMethods.GET, 'A');
             } else if (k == 'b') {
                 log.i('Inserting message B');
-                master.request(new RequestX('/my-resource/testB?delay=' + libx.randomNumber(1000), RequestMethods.GET, 'B'));
+                master.request('/my-resource/testB?delay=' + libx.randomNumber(1000), RequestMethods.GET, 'B');
             } else if (k == 'q') {
                 log.i('quitting...');
                 return false;

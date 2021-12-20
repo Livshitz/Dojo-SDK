@@ -27,7 +27,7 @@ And the best part, it can all run within your browser or node environments 🎉.
 
 ## Examples:
 
-Check [src/examples/master.ts](/src/examples/master.ts) or [browser version](https://raw.githack.com/Livshitz/dojo-sdk/master//src/examples/forBrowser.html)
+Check [src/examples/master.ts](/src/examples/master.ts) or [browser version (play with it!)](https://raw.githack.com/Livshitz/dojo-sdk/master//src/examples/forBrowser.html)
 ```typescript
 const master = new Master();
 
