@@ -10,6 +10,7 @@ export type fileChangeCallback = (event: 'rename' | 'change', filename: string) 
 export class DiskPersistencyManager<T = NoSqlStructure> implements IPersistencyManager<T> {
     public onChangeEvent = new Callbacks<{ event: 'rename' | 'change'; filename: string }>();
     private shouldIgnoreSelfChange = false;
+    private watcher: fs.FSWatcher;
 
     constructor(private dbPath = './.tmp/db.json', private isWatchLocalFile = false) {
         // libx.node.onExit(this.onTerminate.bind(this));
@@ -32,9 +33,13 @@ export class DiskPersistencyManager<T = NoSqlStructure> implements IPersistencyM
         return ret;
     }
 
+    public async shutdown() {
+        this.watcher.close();
+    }
+
     private async watch() {
         log.i('DiskPersistencyManager:watch: Starting watch db file', this.dbPath);
-        fs.watch(this.dbPath, { recursive: true }, this.onFileChange.bind(this));
+        this.watcher = fs.watch(this.dbPath, { recursive: true }, this.onFileChange.bind(this));
     }
 
     private onFileChange(event: 'rename' | 'change', filename: string) {
