@@ -31,7 +31,7 @@ export class Master {
         return newService;
     }
 
-    public async request(path: string, method: RequestMethods, body?: {}, options?: Partial<RequestX>) {
+    public async request(path: string, method: RequestMethods = RequestMethods.GET, body?: {}, options?: Partial<RequestX>) {
         let req: Partial<RequestX> = new RequestX(path, method, body);
         req = { ...req, ...options };
         return await this.requestWithReq(req as RequestX);
