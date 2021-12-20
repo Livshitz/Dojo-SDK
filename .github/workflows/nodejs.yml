@@ -27,12 +27,11 @@ jobs:
                   node-version: ${{ matrix.node-version }}
                   registry-url: 'https://registry.npmjs.org'
                   scope: '@octocat'
-            - name: build
             - run: yarn --frozen-lockfile
             - run: yarn build
             - run: yarn test
-            - name: bump
               if: github.ref == 'refs/heads/master'
+            - name: bump
               run: |
                   git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
                   git config user.name "$GITHUB_ACTOR"
