@@ -38,7 +38,7 @@ test('should perform well with large dataset', async (done) => {
     }
     const dur_write = libx.peekMeasure('write_time');
     // console.log(dur_write);
-    expect(dur_write).toBeLessThanOrEqual(800);
+    expect(dur_write).toBeLessThanOrEqual(1200);
 
     libx.startMeasure('find_time');
     const found = await db.find(col, (x) => x.i == amount);
