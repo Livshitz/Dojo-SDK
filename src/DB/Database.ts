@@ -83,6 +83,10 @@ export class Database {
         this.tryContinuosWrite();
     }
 
+    public async shutdown() {
+        await this.options.persistencyManager?.shutdown();
+    }
+
     private async onStart() {
         libx.log.d('DB: onStart');
         if (this.options.initialData == null) {

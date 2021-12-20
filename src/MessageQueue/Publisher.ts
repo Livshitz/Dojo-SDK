@@ -44,7 +44,7 @@ export class Publisher<T = any> {
         for (let next of this.queue) {
             if (next.status != MessageEnvelopStatuses.ready) continue;
             log.d('Publisher:tryBroadcastNext: trying to notify consumers on next message in line...', next, this.queue.length);
-            this.onNew.broadcast(next);
+            this.onNew.emit(next);
             break;
         }
     }
@@ -72,7 +72,7 @@ export class Publisher<T = any> {
         if (m.status != MessageEnvelopStatuses.locked) throw 'Publisher:ack: Can not ack message that is not in "locked" state';
 
         m.status = MessageEnvelopStatuses.acked;
-        this.onAck.broadcast(message);
+        this.onAck.emit(message);
         delete this.map[message.id];
 
         await this.tryBroadcastNext();

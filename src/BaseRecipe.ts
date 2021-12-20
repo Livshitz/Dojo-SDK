@@ -27,10 +27,13 @@ export class BaseRecipe implements IRecipe {
         throw new NotImplemented();
     }
 
-    public printJournal() {
+    public getJournal() {
         const report = this.journal.getAll((ev) => ev.payload);
-        log.i('Report: ', report);
         return report;
+    }
+
+    public async shutdown() {
+        await this.master.shutdown();
     }
 }
 
@@ -38,7 +41,7 @@ export interface IRecipe {
     master: Master;
     problemStatement: string;
     journal: EventsStream<string>;
-    printJournal();
+    getJournal();
     setup(): Promise<void>;
 }
 

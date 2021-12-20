@@ -16,11 +16,11 @@ export class ExampleRecipe extends BaseRecipe {
     public constructor(options?: Partial<BaseRecipeOptions>) {
         super(options);
 
-        this.journal.broadcast('setup');
+        this.journal.emit('setup');
     }
 
     public async setup(): Promise<void> {
-        this.journal.broadcast('setup: start');
+        this.journal.emit('setup: start');
 
         const initData = {
             col: {
@@ -58,7 +58,7 @@ export class ExampleRecipe extends BaseRecipe {
 
         // this.master.setupServiceProxy(); // call through: http://localhost:3000/test?q=1
 
-        this.journal.broadcast('setup: end');
+        this.journal.emit('setup: end');
     }
 
     public async run() {

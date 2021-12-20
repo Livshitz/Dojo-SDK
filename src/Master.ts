@@ -1,5 +1,5 @@
 import { libx } from 'libx.js/build/bundles/essentials';
-import Exception from 'libx.js/build/helpers/Exceptions';
+import Exception, { NotImplemented } from 'libx.js/build/helpers/Exceptions';
 import { Mapping } from 'libx.js/build/types/interfaces';
 import { NoSqlStructure } from './DB';
 import { Database, ModuleOptions as DatabaseOptions } from './DB/Database';
@@ -73,6 +73,14 @@ export class Master {
         if (schedulerType == SchedulerTypes.Once) return this.scheduler.scheduleOnce(recurrence, tick);
         else if (schedulerType == SchedulerTypes.Recurring) return this.scheduler.scheduleRepeating(recurrence, tick);
         else throw new Exception('Master:addScheduler: Unrecognized scheduler type', schedulerType, recurrence);
+    }
+
+    public async shutdown() {
+        await this.db.shutdown();
+        // TODO:
+        // await this.scheduler.shutdown();
+        // await this.services.forEach.shutdown();
+        // await this.mqMgr.forEach.shutdown();
     }
 
     // TODO: Commented out to enable browserify of `Master`. Find a way to replace ServiceProxy with browser-compatible alternative
