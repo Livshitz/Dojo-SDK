@@ -2,6 +2,7 @@ import { log } from 'libx.js/build/modules/log';
 import { node } from 'libx.js/build/node';
 import { BaseRecipe, ModuleOptions as BaseRecipeOptions } from '../../BaseRecipe';
 import { DiskPersistencyManager } from '../../DB/PersistencyManagers/Disk';
+import { MemoryPersistencyManager } from '../../DB/PersistencyManagers/Memory';
 import { SchedulerTypes } from '../../Scheduler/CronScheduler';
 import { BaseService } from '../../Servicer/BaseService';
 import { IRequest, IResponse } from '../../Servicer/Request';
@@ -31,7 +32,7 @@ export class Recipe_Intro extends BaseRecipe {
                 },
             },
         };
-        await this.master.addDB(new DiskPersistencyManager('../../../.tmp/db.json', true), initData, { continuosWrite: true });
+        await this.master.addDB(new MemoryPersistencyManager(), initData, { continuosWrite: true });
 
         this.master.addScheduler(
             '*/5 * * * * *',

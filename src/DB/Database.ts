@@ -84,7 +84,7 @@ export class Database {
     }
 
     public async shutdown() {
-        await this.options.persistencyManager?.shutdown();
+        await this.options.persistencyManager.shutdown?.();
     }
 
     private async onStart() {
