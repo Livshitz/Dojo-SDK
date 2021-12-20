@@ -10,7 +10,7 @@ class MyItem {
     public num: number;
 }
 
-const sleep = 5;
+const sleep = 50;
 
 beforeAll(async () => {});
 
@@ -121,13 +121,13 @@ test('1 worker with 3 instances should treat a 3 message in order and in paralle
     );
     queue1.enqueue({ num: 1, str: 'msg1' });
     events.push('msg1 enqueue');
-    await libx.sleep(0);
+    await libx.sleep(10);
     queue1.enqueue({ num: 2, str: 'msg2' });
     events.push('msg2 enqueue');
-    await libx.sleep(0);
+    await libx.sleep(10);
     queue1.enqueue({ num: 3, str: 'msg3' });
     events.push('msg3 enqueue');
-    await libx.sleep(0);
+    await libx.sleep(10);
 });
 
 test('2 worker with 1 instances should treat a 3 message in order and in sequence', async (done) => {
