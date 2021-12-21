@@ -73,6 +73,9 @@ master.addScheduler(
 await master.request(new RequestX('/my-resource', RequestMethods.GET));
 ```
 
+## Recipes:
+Go to [Dojo-Recipes](https://github.com/Livshitz/Dojo-Recipes) to start on with suggested scenarios to utilize dojo-sdk and solve them.
+
 
 ## Install:
 ```
