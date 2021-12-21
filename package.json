@@ -21,6 +21,7 @@
     "files": [
         "bin/**",
         "dist/**",
+        "build/**",
         "src/**",
         "*.js",
         "*.ts"
