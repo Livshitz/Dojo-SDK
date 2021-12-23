@@ -21,7 +21,7 @@ This is essentially a system-wide playground you can play with from within your 
 1. ⭐️ **Database**: CRUD and query operations with multiple persistency options, memory and disk. Stores the data on a local JSON file so you can see in real time changes and actually intercept and change values directly and alter the running DB.
 1. ⭐️ **MessageQueue**: Complete working stripped down messaging queue Provider and Consumer so you could implement easily your own consumer. Supports auto scaling to simulate real world behavior.
 1. ⭐️ **Micro Services & Orchestrator**: HTTP micro services that can auto-scale based on traffic to simulate real-world orchestrated environment.
-1. **Matrix**: Handy root level object that consolidates all needed methods to spawn your environment, instead of manually creating objects. Inspired by the jQuery 'matrix' object.
+1. **Matrix**: Handy root level object that consolidates all needed methods to spawn your environment, instead of manually creating objects. Inspired by the jQuery 'jQuery master' object.
 1. **Scheduler**: CRON scheduler to simulate scheduled jobs.
 1. **Browser compatible**: Setup your simulated environment within the browser and play with it!
 1. **Future**:
