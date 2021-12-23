@@ -1,6 +1,6 @@
 import { libx } from 'libx.js/build/bundles/browser.essentials';
 import { log } from 'libx.js/build/modules/log';
-import { Master } from './Master';
+import { Matrix } from './Matrix';
 import { MemoryPersistencyManager } from './DB/PersistencyManagers/Memory';
 import { SchedulerTypes } from './Scheduler/CronScheduler';
 // import { random } from 'faker';
@@ -10,7 +10,7 @@ import { ObjectId } from 'libx.js/build/helpers/ObjectId';
 
 if ((<any>window).dojo == undefined) (<any>window).dojo = {};
 (<any>window).dojo = {
-    master: new Master(),
+    matrix: new Matrix(),
     MemoryPersistencyManager,
     BaseService,
     SchedulerTypes,
