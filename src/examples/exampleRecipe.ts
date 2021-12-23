@@ -30,9 +30,9 @@ export class ExampleRecipe extends BaseRecipe {
                 },
             },
         };
-        await this.master.addDB(new DiskPersistencyManager('./.tmp/db.json', true), initData, { continuosWrite: true });
+        await this.matrix.addDB(new DiskPersistencyManager('./.tmp/db.json', true), initData, { continuosWrite: true });
 
-        this.master.addScheduler(
+        this.matrix.addScheduler(
             '*/5 * * * * *',
             async () => {
                 log.i('tick');
@@ -40,7 +40,7 @@ export class ExampleRecipe extends BaseRecipe {
             SchedulerTypes.Recurring
         );
 
-        this.master.addService(
+        this.matrix.addService(
             '/test',
             () =>
                 new (class extends BaseService {

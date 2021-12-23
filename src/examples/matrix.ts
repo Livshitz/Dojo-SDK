@@ -2,7 +2,7 @@ import { libx } from 'libx.js/build/bundles/node.essentials';
 import { IScript } from 'libx.js/build/helpers/IScript';
 import Program from 'libx.js/build/node/Program';
 import { log } from 'libx.js/build/modules/log';
-import { Master } from '../Master';
+import { Matrix } from '../Matrix';
 import { Service } from './Services/Service';
 import { IRequest, RequestX, RequestMethods, IResponse, ResponseTypes } from '../Servicer/Request';
 import { DiskPersistencyManager } from '../DB/PersistencyManagers/Disk';
@@ -21,7 +21,7 @@ const conf = {
 // $ node build/examples/master.js
 class Script implements IScript<typeof conf> {
     public async executeAsScript(config: typeof conf): Promise<void> {
-        const master = new Master();
+        const master = new Matrix();
         await master.addDB(new DiskPersistencyManager('./.tmp/db.json', true), {
             col: {
                 '618230709af3ade104bee1ff': {

@@ -1,11 +1,11 @@
 import { log } from 'libx.js/build/modules/log';
 import { EventsStream } from 'libx.js/build/modules/EventsStream';
 import { NotImplemented } from 'libx.js/build/helpers/Exceptions';
-import { Master } from './Master';
+import { Matrix } from './Matrix';
 
 // This is a template
 export class BaseRecipe implements IRecipe {
-    public master: Master;
+    public matrix: Matrix;
     public journal = new EventsStream<string>();
     public problemStatement = `
     ========================================
@@ -16,7 +16,7 @@ export class BaseRecipe implements IRecipe {
     public constructor(public options?: Partial<ModuleOptions>) {
         this.options = { ...new ModuleOptions(), ...options };
 
-        this.master = new Master();
+        this.matrix = new Matrix();
     }
 
     public async setup(): Promise<void> {
@@ -33,12 +33,12 @@ export class BaseRecipe implements IRecipe {
     }
 
     public async shutdown() {
-        await this.master.shutdown();
+        await this.matrix.shutdown();
     }
 }
 
 export interface IRecipe {
-    master: Master;
+    matrix: Matrix;
     problemStatement: string;
     journal: EventsStream<string>;
     getJournal();

@@ -14,7 +14,7 @@ import { Orchestrator } from './Servicer/Orchestrator';
 import { RequestMethods, RequestX } from './Servicer/Request';
 // import { ServiceProxy } from './Servicer/ServiceProxy';
 
-export class Master {
+export class Matrix {
     public services: Mapping<Orchestrator> = {};
     public db: Database;
     public mqMgr: MessageQueueManager;
@@ -40,7 +40,7 @@ export class Master {
     private async requestWithReq(request: RequestX) {
         const prefix = libx.getMatch(request.path, /(\/[^\/\?\#]*)\/?/)?.[0];
         const service = this.services[prefix];
-        if (service == null) throw new Exception('Master:request: Could not locate service for given route', { request, prefix });
+        if (service == null) throw new Exception('Matrix:request: Could not locate service for given route', { request, prefix });
         request.path = request.path.substring(prefix.length);
         const ret = await service.handleIncomingRequest(request);
         return ret;
@@ -51,7 +51,7 @@ export class Master {
         initialData?: NoSqlStructure,
         options?: Partial<DatabaseOptions>
     ) {
-        if (this.db != null) throw new Exception('Master:addDB: DB already initiated');
+        if (this.db != null) throw new Exception('Matrix:addDB: DB already initiated');
         this.db = new Database({ persistencyManager, initialData, ...options });
         await this.db.onReady;
         libx.di.register('db', this.db);
@@ -72,7 +72,7 @@ export class Master {
     public async addScheduler(recurrence: string, tick: () => void, schedulerType: SchedulerTypes) {
         if (schedulerType == SchedulerTypes.Once) return this.scheduler.scheduleOnce(recurrence, tick);
         else if (schedulerType == SchedulerTypes.Recurring) return this.scheduler.scheduleRepeating(recurrence, tick);
-        else throw new Exception('Master:addScheduler: Unrecognized scheduler type', schedulerType, recurrence);
+        else throw new Exception('Matrix:addScheduler: Unrecognized scheduler type', schedulerType, recurrence);
     }
 
     public async shutdown() {
@@ -83,7 +83,7 @@ export class Master {
         // await this.mqMgr.forEach.shutdown();
     }
 
-    // TODO: Commented out to enable browserify of `Master`. Find a way to replace ServiceProxy with browser-compatible alternative
+    // TODO: Commented out to enable browserify of `Matrix`. Find a way to replace ServiceProxy with browser-compatible alternative
 
     // public async setupServiceProxy(port?: number) {
     //     const options = port != null ? { port } : null;

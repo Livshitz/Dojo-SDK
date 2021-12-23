@@ -1,5 +1,5 @@
 import { log } from 'libx.js/build/modules/log';
-import { Master } from '../Master';
+import { Matrix } from '../Matrix';
 import { BasicServer, ModuleOptions as BasicServerOptions } from 'libx.js/build/node/BasicServer';
 import { IRequest, IResponse, RequestMethods, RequestX, ResponseTypes } from './Request';
 
@@ -8,7 +8,7 @@ import { IRequest, IResponse, RequestMethods, RequestX, ResponseTypes } from './
  */
 export class ServiceProxy {
     private server: BasicServer;
-    public constructor(private master: Master, public options?: Partial<ModuleOptions>) {
+    public constructor(private matrix: Matrix, public options?: Partial<ModuleOptions>) {
         this.options = { ...new ModuleOptions(), ...options };
     }
 
@@ -22,7 +22,7 @@ export class ServiceProxy {
                 const newReq = new RequestX(url, RequestMethods[method], body);
                 newReq.headers = headers || {};
                 newReq.headers['ip'] = ip;
-                const r: IResponse = <IResponse>{}; //await this.master.request(newReq);
+                const r: IResponse = <IResponse>{}; //await this.matrix.request(newReq);
 
                 // res.json({ query, params, url, path, method, response: r?.response });
                 res.status(this.responseTypeToHttpStatusCode(r.type)).json(r).send();
