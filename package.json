@@ -1,6 +1,6 @@
 {
     "name": "dojo-sdk",
-    "version": "0.4.2",
+    "version": "0.4.3",
     "main": "build/Main.js",
     "license": "MIT",
     "author": "Elya Livshitz",
