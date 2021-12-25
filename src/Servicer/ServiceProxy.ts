@@ -22,10 +22,11 @@ export class ServiceProxy {
                 const newReq = new RequestX(url, RequestMethods[method], body);
                 newReq.headers = headers || {};
                 newReq.headers['ip'] = ip;
-                const r: IResponse = <IResponse>{}; //await this.matrix.request(newReq);
+                let r: IResponse = <IResponse>{};
+                r = await this.matrix.request(path, RequestMethods[method], body, newReq);
 
                 // res.json({ query, params, url, path, method, response: r?.response });
-                res.status(this.responseTypeToHttpStatusCode(r.type)).json(r).send();
+                res.status(this.responseTypeToHttpStatusCode(r?.type || ResponseTypes.OK)).json(r?.body);
             } catch (ex) {
                 const errObj = { query, params, url, path, method, error: ex.toString() };
                 log.error('ServiceProxy: Error in request', errObj);

@@ -4,7 +4,7 @@ import fs from 'fs';
 import { IPersistencyManager } from './IPersistencyManager';
 import { log } from 'libx.js/build/modules/log';
 import { Callbacks } from 'libx.js/build/modules/Callbacks';
-import { NotImplemented } from 'libx.js/src/helpers/Exceptions';
+import { NotImplemented } from 'libx.js/build/helpers/Exceptions';
 
 export type fileChangeCallback = (event: 'rename' | 'change', filename: string) => void;
 export class DiskPersistencyManager<T = NoSqlStructure> implements IPersistencyManager<T> {
