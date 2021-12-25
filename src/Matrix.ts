@@ -33,12 +33,13 @@ export class Matrix {
 
     public async request(path: string, method: RequestMethods = RequestMethods.GET, body?: {}, options?: Partial<RequestX>) {
         let req: Partial<RequestX> = new RequestX(path, method, body);
-        req = { ...req, ...options };
+        req = libx.merge(req, options);
         return await this.requestWithReq(req as RequestX);
     }
 
     private async requestWithReq(request: RequestX) {
         const prefix = libx.getMatch(request.path, /(\/[^\/\?\#]*)\/?/)?.[0];
+        if (prefix == '/favicon.ico') return null;
         const service = this.services[prefix];
         if (service == null) throw new Exception('Matrix:request: Could not locate service for given route', { request, prefix });
         request.path = request.path.substring(prefix.length);

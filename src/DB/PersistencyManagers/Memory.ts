@@ -6,7 +6,7 @@ export class MemoryPersistencyManager<T = NoSqlStructure> implements IPersistenc
     private dbPath = './.tmp/db.json';
 
     public async write(data: Object, compactJson = true) {
-        log.v('MemoryPersistencyManager:write: writing DB', data);
+        // log.v('MemoryPersistencyManager:write: writing DB', data);
     }
 
     public async read(): Promise<T> {

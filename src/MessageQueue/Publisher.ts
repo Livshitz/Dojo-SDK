@@ -1,9 +1,10 @@
 import { Action, EventsStream } from 'libx.js/build/modules/EventsStream';
-import { MessageQueueManager } from './MessageQueueManager';
-import { MessageEnvelop, MessageEnvelopStatuses } from './MessageEnvelop';
 import { Mapping } from 'libx.js/build/types/interfaces';
 import Exception from 'libx.js/build/helpers/Exceptions';
 import { log } from 'libx.js/build/modules/log';
+import { ArrayExtensions } from 'libx.js/build/extensions/ArrayExtensions';
+import { MessageQueueManager } from './MessageQueueManager';
+import { MessageEnvelop, MessageEnvelopStatuses } from './MessageEnvelop';
 import { Delegate } from './Consumer';
 
 export class Publisher<T = any> {
@@ -17,7 +18,7 @@ export class Publisher<T = any> {
 
         this.onAck.subscribe((message) => {
             if (message == null) return;
-            this.queue.remove(message.payload);
+            ArrayExtensions.remove.call(this.queue, message.payload);
             delete this.map[message.payload.id];
         });
     }

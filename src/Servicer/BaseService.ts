@@ -49,6 +49,7 @@ export class BaseService implements IService {
             `path: ${request.path}`
         );
         this.isBusy = false;
+        if (res == null) res = <IResponse>{};
         res.body = (request.body ? request.body + ':' : '') + this.identifier;
         this.jobsTreated++;
 
