@@ -21,22 +21,23 @@
     </head>
     <body>
         <h3>Examples</h3>
-        <p>Open devtools to see console logs.</p>
+        <p>Open devtools to see console logs and run `init();`.</p>
 
-        <p>Run local https server: 
+        <!-- <p>Run local https server: 
             <code>http-server -S -C .tmp/cert.pem -K .tmp/key.pem -o</code>
             <br/> 
             open https://127.0.0.1:8080/
-        </p>
+        </p> -->
     </body>
     <script>
         dojo.log.i('dojo loaded');
 
-        const initDemo = async () => {
+        const init = async () => {
+            debugger
             dojo.log.v('demo: Dojo started');
 
             // spawn DB with local disk persistency (will listen to local/external changes):
-            await dojo.master.addDB(new dojo.MemoryPersistencyManager(), {
+            await dojo.matrix.addDB(new dojo.MemoryPersistencyManager(), {
                 col: {
                     '618230709af3ade104bee1ff': {
                         a: 100,
@@ -47,10 +48,10 @@
             });
     
             // spawn MessageQueue service and a consumer:
-            await dojo.master.addMQ('queue1', { treat: (item) => console.log('This is my consumer treating item: ', item) });
+            await dojo.matrix.addMQ('queue1', { treat: (item) => console.log('This is my consumer treating item: ', item) });
     
             // spawn a micro-service with auto-scaling from min 1 to max 10:
-            await dojo.master.addService(
+            await dojo.matrix.addService(
                 '/my-resource',
                 () =>
                     new (class extends dojo.BaseService {
@@ -67,7 +68,7 @@
             );
     
             // spawn a scheduler that will run every 5 seconds:
-            dojo.master.addScheduler(
+            dojo.matrix.addScheduler(
                 '*/10 * * * * *',
                 () => {
                     dojo.log.i('Scheduler: TICK!', dojo.ObjectId.new());
@@ -77,17 +78,16 @@
     
             // perform actual call to the microservice 
             dojo.log.i('demo: Sending request to micro service...');
-            await dojo.master.request('/my-resource/sub-path', dojo.RequestMethods.GET);
-            await dojo.master.request('/my-resource/mypath', dojo.RequestMethods.POST, { a: 1 });
+            await dojo.matrix.request('/my-resource/sub-path', dojo.RequestMethods.GET);
+            await dojo.matrix.request('/my-resource/mypath', dojo.RequestMethods.POST, { a: 1 });
 
             dojo.libx.delay(1000).then(()=>{
-                console.log('services instances: ', dojo.master.services["/my-resource"].instances.length);
+                console.log('services instances: ', dojo.matrix.services["/my-resource"].instances.length);
             });
 
             dojo.log.i('demo: Dojo setup completed');
         }
 
-        initDemo();
 
     </script>
 </html>
