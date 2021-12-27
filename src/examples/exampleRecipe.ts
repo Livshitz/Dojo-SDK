@@ -56,7 +56,7 @@ export class ExampleRecipe extends BaseRecipe {
             10
         );
 
-        // this.master.setupServiceProxy(); // call through: http://localhost:3000/test?q=1
+        // this.matrix.setupServiceProxy(); // call through: http://localhost:3000/test?q=1
 
         this.journal.emit('setup: end');
     }
